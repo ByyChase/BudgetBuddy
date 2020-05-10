@@ -1,5 +1,26 @@
-from flask import Flask
-from controllers import controllers
+import sqlite3
+from Models.CreateDatabase import CreateDB
 
-if __name__ == "__main__":
-    controllers.start_webserver(__name__)
+
+def RunApp():
+    print("Connecting to Database")
+    db = sqlite3.connect('EasyBudget.db')
+    c = db.cursor()
+
+    CreateDB()
+
+    db.commit()
+    db.close()
+
+    
+
+
+RunApp()
+
+
+
+
+
+
+
+
