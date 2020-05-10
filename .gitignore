@@ -3,6 +3,7 @@ venv/
 __pycache__/
 *.py[cod]
 *$py.class
+__pycache__/
 
 # C extensions
 *.so
@@ -52,4 +53,4 @@ coverage.xml
 .pytest_cache/
 
 #Database
-.db
+*.db
