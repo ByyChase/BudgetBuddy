@@ -1,4 +1,4 @@
-class PayCheck:
+class Paycheck:
 
     def __init__(self, Date, Amount, Description, Paycheck_ID, UnBudgeted):
         self.Date = Date
@@ -7,3 +7,4 @@ class PayCheck:
         self.Paycheck_ID = Paycheck_ID 
         self.UnBudgeted = UnBudgeted
         self.User_ID = User_ID
+        #THIS IS A COMMENT 
