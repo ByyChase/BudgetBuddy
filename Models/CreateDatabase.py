@@ -13,7 +13,8 @@ def CreateDB():
                         UnBudgeted real,
                         Description text, 
                         PayCheck_ID integer,
-                        User_ID integer
+                        User_ID integer PRIMARY KEY,
+                        foreign key(User_ID) refreances User(User_ID)
                         )""")
 
         c.execute("""CREATE TABLE Budget (
@@ -22,8 +23,10 @@ def CreateDB():
                         UnSpent real,
                         Description text,
                         PayCheck_ID integer,
-                        Budget_ID integer,
-                        User_ID integer 
+                        Budget_ID integer PRIMARY KEY,
+                        User_ID integer,
+                        foreign key(USER_ID) refreances User(User_ID),
+                        foreign key(PayCheck_ID) refreances Paycheck(PayCheck_ID) 
                         )""")
 
         c.execute("""CREATE TABLE Expense (
@@ -32,8 +35,11 @@ def CreateDB():
                         Amount real,
                         PayCheck_ID integer,
                         Budget_ID integer,
-                        Expense_ID integer,
-                        User_ID integer
+                        Expense_ID integer PRIMARY KEY,
+                        User_ID integer,
+                        foreign key(USER_ID) refreances User(User_ID),
+                        foreign key(PayCheck_ID) refreances Paycheck(PayCheck_ID) ,
+                        foreign key(Budget_ID) refreances Budget(Budget_ID) 
                         )""")
 
         c.execute("""CREATE TABLE User (
@@ -41,7 +47,15 @@ def CreateDB():
                         First_Name text,
                         Last_Name text,
                         Password text
-                        User_ID integer
+                        User_ID integer PRIMARY KEY
+                        )""")
+
+        c.execute("""CREATE TABLE BankAccount (
+                        Name text,
+                        Ammount real,
+                        Description text,
+                        Account_ID integer PRIMARY KEY
+                        foreign key(User_ID) refreances User(User_ID)
                         )""")
 
         print("Creating Database")
