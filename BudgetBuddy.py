@@ -10,9 +10,10 @@ def RunApp():
     CreateDB()
 
     db.commit()
+    print("Closing Database")
     db.close()
 
-    
+
 
 
 RunApp()
