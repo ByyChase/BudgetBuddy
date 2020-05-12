@@ -1,12 +1,28 @@
 import sqlite3
 
-def CreateDB():
+db = None
+
+def LoadDB():
+
     
-    db = sqlite3.connect('EasyBudget.db')
+
+    global db
+    if db:
+        print("Databse already connected")
+        return
+        
+    else:
+        db = sqlite3.connect('EasyBudget.db')
+        #Validate()
+
+    
+    
     c = db.cursor()
 
-    try:
-        
+
+def CreateDB():
+
+    try:  
         c.execute("""CREATE TABLE Paycheck (
                         Date text,
                         Amount real,
@@ -55,16 +71,19 @@ def CreateDB():
                         Ammount real,
                         Description text,
                         Account_ID integer PRIMARY KEY
+                        User_ID integer,
                         foreign key(User_ID) refreances User(User_ID)
                         )""")
 
         print("Creating Database")
 
-    except:
-        print("Database already created")
+    except Exception as error:
+        print(error)
+    
+    return
 
 
-    print("Database Connected")
+    
 
 
 
