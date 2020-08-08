@@ -18,6 +18,7 @@ def LoadDB():
     
     
     c = db.cursor()
+    return db.cursor()
 
 
 def CreateDB():
@@ -63,7 +64,7 @@ def CreateDB():
                         First_Name text,
                         Last_Name text,
                         Password text
-                        User_ID integer PRIMARY KEY
+                        User_ID autoincrement integer PRIMARY KEY
                         )""")
 
         c.execute("""CREATE TABLE BankAccount (
@@ -81,6 +82,13 @@ def CreateDB():
         print(error)
     
     return
+
+def cursor():
+    if not db:
+        LoadDB()
+
+    else:
+        return db.cursor()
 
 
     
