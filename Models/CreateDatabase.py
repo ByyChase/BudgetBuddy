@@ -3,21 +3,15 @@ import sqlite3
 db = None
 
 def LoadDB():
-
     
-
-    global db
-    if db:
-        print("Databse already connected")
-        return
-        
-    else:
+    try: 
         db = sqlite3.connect('EasyBudget.db')
-        #Validate()
+        print("Connecting to Database")
 
-    
-    
-    c = db.cursor()
+    except: 
+        print("Creating Database")
+        CreateDB()
+
     return db.cursor()
 
 
@@ -89,6 +83,12 @@ def cursor():
 
     else:
         return db.cursor()
+
+def commit():
+    db.commit()
+
+def close():
+    db.close()
 
 
     

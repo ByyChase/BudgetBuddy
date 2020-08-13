@@ -1,4 +1,5 @@
 from Models.CreateDatabase import cursor
+from Models.CreateDatabase import commit 
 
 class User:
 
@@ -8,13 +9,14 @@ class User:
         self.Last_Name = Last_Name     #String
         self.User_ID = User_ID         #Integer
 
-    def fetch(self, Username):
+    def fetch(Username):
         statement = "SELECT Username, First_Name, Last_Name, User_ID FROM USER WHERE USERNAME = ?"
         return cursor().execute(statement, (self.UserName))
 
     def New_Employee(self, Password): 
         statement = "INSERT INTO USER (Username, First_Name, Last_Name, Password) VALUES (?, ?, ?, ?)"
-        return cursor().execute(statement, (self.UserName, self.First_Name, self.Last_Name, Password))
+        cursor().execute(statement, (self.UserName, self.First_Name, self.Last_Name, Password))
+        commit()
         
 
 

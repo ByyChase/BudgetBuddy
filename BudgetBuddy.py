@@ -3,12 +3,11 @@ from Models.CreateDatabase import CreateDB
 from Models.CreateDatabase import LoadDB
 from ObjectManipulation import CreatePaycheck
 from Auth.Login import Login
+from Models.CreateDatabase import close
+from Models.CreateDatabase import commit
 
 
 def RunApp():
-    print("Connecting to Database")
-    db = sqlite3.connect('EasyBudget.db')
-    c = db.cursor()
 
     LoadDB()
 
@@ -39,7 +38,7 @@ def RunApp():
 
 
 
-    db.commit()
+    commit()
     print("\n\nClosing DataBase...")
     print("0%")
     time.sleep(1)
@@ -53,7 +52,7 @@ def RunApp():
     time.sleep(1)
     print("\n100%")
     print("\nHave a nice day! ")
-    db.close()
+    close()
 
 
 
