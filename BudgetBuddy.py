@@ -1,5 +1,4 @@
-import sqlite3, time
-from Models.CreateDatabase import CreateDB
+import sqlite3, time, os
 from Models.CreateDatabase import LoadDB
 from ObjectManipulation import CreatePaycheck
 from Auth.Login import Login
@@ -8,8 +7,9 @@ from Models.CreateDatabase import commit
 
 
 def RunApp():
+    print(os.getcwd())
 
-    LoadDB()
+    LoadDB(os.getcwd() + '/BudgetBuddy.db')
 
     Login()
 

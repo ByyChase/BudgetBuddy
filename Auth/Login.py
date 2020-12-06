@@ -16,29 +16,22 @@ def Login():
 
     if Username == "NEW":
         createNewUser()
-
-    else: 
-        print(getUser(Username))
-        Password = getpass.getpass()
+        Login()
 
 
-    #if bcrypt.checkpw(Password, User.fetch(UserName = UserName).Password):
-        #Allow login 
-        #User = 
-        #pass
+    Password = getpass.getpass()
+
+
+    if bcrypt.checkpw(Password.encode('utf8'), User.fetch(Username = Username).Password):
+        print('Allow Login')
+        return
+        
+        
     
-    #else:
-        #Don't allow login
-        #pass
+    else:
+        exit()
+        
 
-
-
-
-
-
-
-def getUser(Username):
-    return User.fetch(Username = Username)
 
 def createNewUser():
 
@@ -59,9 +52,11 @@ def createNewUser():
     #Check user input
 
     if Password == Password2:
-  
-        NewUser = User(UserName = Username, First_Name = First_Name, Last_Name = Last_Name)
 
-        tempUser = NewUser.New_Employee(Password)
+        CryptPassword = bcrypt.hashpw(Password.encode('utf8'), bcrypt.gensalt())
+  
+        NewUser = User(UserName = Username, First_Name = First_Name, Last_Name = Last_Name, Password = CryptPassword)
+
+        tempUser = NewUser.New_User(Password)
 
 

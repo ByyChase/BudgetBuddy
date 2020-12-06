@@ -1,34 +1,36 @@
-import sqlite3
+import sqlite3, os
 
 db = None
 
-def LoadDB():
-    
-    try: 
-        db = sqlite3.connect('EasyBudget.db')
-        print("Connecting to Database")
+def LoadDB(db_file):
 
-    except: 
-        print("Creating Database")
-        CreateDB()
+    global db
+
+    if os.path.isfile('BudgetBuddy.db'):
+        print("Connecting to Database")
+        db = sqlite3.connect(db_file)
+    
+    else:
+        db = sqlite3.connect(db_file)
+        CreateDB(db.cursor())
 
     return db.cursor()
 
 
-def CreateDB():
+def CreateDB(c):
 
     try:  
-        c.execute("""CREATE TABLE Paycheck (
+        c.execute("""CREATE TABLE PAYCHECK (
                         Date text,
                         Amount real,
                         UnBudgeted real,
                         Description text, 
                         PayCheck_ID integer,
                         User_ID integer PRIMARY KEY,
-                        foreign key(User_ID) refreances User(User_ID)
+                        foreign key(User_ID) references User(User_ID)
                         )""")
 
-        c.execute("""CREATE TABLE Budget (
+        c.execute("""CREATE TABLE BUDGET (
                         Name text,
                         Amount real,
                         UnSpent real,
@@ -36,11 +38,11 @@ def CreateDB():
                         PayCheck_ID integer,
                         Budget_ID integer PRIMARY KEY,
                         User_ID integer,
-                        foreign key(USER_ID) refreances User(User_ID),
-                        foreign key(PayCheck_ID) refreances Paycheck(PayCheck_ID) 
+                        foreign key(USER_ID) references User(User_ID),
+                        foreign key(PayCheck_ID) references Paycheck(PayCheck_ID) 
                         )""")
 
-        c.execute("""CREATE TABLE Expense (
+        c.execute("""CREATE TABLE EXPENSE (
                         Name text,
                         Description text,
                         Amount real,
@@ -48,26 +50,26 @@ def CreateDB():
                         Budget_ID integer,
                         Expense_ID integer PRIMARY KEY,
                         User_ID integer,
-                        foreign key(USER_ID) refreances User(User_ID),
-                        foreign key(PayCheck_ID) refreances Paycheck(PayCheck_ID) ,
-                        foreign key(Budget_ID) refreances Budget(Budget_ID) 
+                        foreign key(USER_ID) references User(User_ID),
+                        foreign key(PayCheck_ID) references Paycheck(PayCheck_ID) ,
+                        foreign key(Budget_ID) references Budget(Budget_ID) 
                         )""")
 
-        c.execute("""CREATE TABLE User (
+        c.execute("""CREATE TABLE USER (
                         Username text,
                         First_Name text,
                         Last_Name text,
-                        Password text
-                        User_ID autoincrement integer PRIMARY KEY
+                        Password text,
+                        User_ID integer PRIMARY KEY
                         )""")
 
-        c.execute("""CREATE TABLE BankAccount (
+        c.execute("""CREATE TABLE BANKACCOUNT (
                         Name text,
                         Ammount real,
                         Description text,
-                        Account_ID integer PRIMARY KEY
+                        Account_ID integer PRIMARY KEY,
                         User_ID integer,
-                        foreign key(User_ID) refreances User(User_ID)
+                        foreign key(User_ID) references User(User_ID)
                         )""")
 
         print("Creating Database")
