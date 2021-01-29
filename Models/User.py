@@ -1,5 +1,6 @@
 from Models.CreateDatabase import cursor
 from Models.CreateDatabase import commit
+from Models.CreateDatabase import dict_factory
 
 class User:
 
@@ -8,11 +9,13 @@ class User:
         self.First_Name = First_Name   #String
         self.Last_Name = Last_Name     #String
         self.User_ID = User_ID         #Integer
+        self.Password = Password
 
     def fetch(self):
         TempCursor = cursor()
+        print(self.Username)
         statement = "SELECT Username, First_Name, Last_Name, User_ID, Password FROM USER WHERE USERNAME = ?"
-        TempCursor.execute(statement, (self.Username))
+        TempCursor.execute(statement, (self.Username,))
         
         Temp_SQL_Data = TempCursor.fetchone()
         
@@ -20,7 +23,9 @@ class User:
         
         return Return_User
 
-    def New_User(self, Password): 
+    def New_User(self): 
         statement = "INSERT INTO USER (Username, First_Name, Last_Name, Password) VALUES (?, ?, ?, ?)"
-        cursor().execute(statement, (self.Username, self.First_Name, self.Last_Name, Password))
+        
+        print(statement)
+        cursor().execute(statement, (self.Username, self.First_Name, self.Last_Name, self.Password,))
         commit()
