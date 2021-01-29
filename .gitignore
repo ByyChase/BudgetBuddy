@@ -54,3 +54,4 @@ coverage.xml
 
 #Database
 *.db
+.venv/
