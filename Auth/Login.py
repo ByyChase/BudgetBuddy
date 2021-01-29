@@ -20,9 +20,13 @@ def Login():
 
 
     Password = getpass.getpass()
+    
+    
+    user = User(Username = Username)
+    
+    user.fetch()
 
-
-    if bcrypt.checkpw(Password.encode('utf8'), User.fetch(Username = Username).Password):
+    if bcrypt.checkpw(Password.encode('utf8'), user.fetch(Username1 = Username).Password):
         print('Allow Login')
         return
         
@@ -55,7 +59,7 @@ def createNewUser():
 
         CryptPassword = bcrypt.hashpw(Password.encode('utf8'), bcrypt.gensalt())
   
-        NewUser = User(UserName = Username, First_Name = First_Name, Last_Name = Last_Name, Password = CryptPassword)
+        NewUser = User(Username = Username, First_Name = First_Name, Last_Name = Last_Name, Password = CryptPassword)
 
         tempUser = NewUser.New_User(Password)
 

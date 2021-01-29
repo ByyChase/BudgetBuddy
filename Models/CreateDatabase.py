@@ -19,12 +19,12 @@ def LoadDB(db_file):
 
 def CreateDB(c):
 
-    try:  
+    try:
         c.execute("""CREATE TABLE PAYCHECK (
                         Date text,
                         Amount real,
                         UnBudgeted real,
-                        Description text, 
+                        Description text,
                         PayCheck_ID integer,
                         User_ID integer PRIMARY KEY,
                         foreign key(User_ID) references User(User_ID)
@@ -51,8 +51,8 @@ def CreateDB(c):
                         Expense_ID integer PRIMARY KEY,
                         User_ID integer,
                         foreign key(USER_ID) references User(User_ID),
-                        foreign key(PayCheck_ID) references Paycheck(PayCheck_ID) ,
-                        foreign key(Budget_ID) references Budget(Budget_ID) 
+                        foreign key(PayCheck_ID) references Paycheck(PayCheck_ID),
+                        foreign key(Budget_ID) references Budget(Budget_ID)
                         )""")
 
         c.execute("""CREATE TABLE USER (
