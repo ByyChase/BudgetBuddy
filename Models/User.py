@@ -13,15 +13,20 @@ class User:
 
     def fetch(self):
         TempCursor = cursor()
-        print(self.Username)
-        statement = "SELECT Username, First_Name, Last_Name, User_ID, Password FROM USER WHERE USERNAME = ?"
-        TempCursor.execute(statement, (self.Username,))
         
-        Temp_SQL_Data = TempCursor.fetchone()
+        try:
+            statement = "SELECT Username, First_Name, Last_Name, User_ID, Password FROM USER WHERE USERNAME = ?"
+            TempCursor.execute(statement, (self.Username,))
         
-        Return_User = User(Username = Temp_SQL_Data[0], First_Name = Temp_SQL_Data[1], Last_Name = Temp_SQL_Data[2], User_ID = Temp_SQL_Data[3], Password = Temp_SQL_Data[4])
+            Temp_SQL_Data = TempCursor.fetchone()
         
-        return Return_User
+            return User(Username = Temp_SQL_Data[0], First_Name = Temp_SQL_Data[1], Last_Name = Temp_SQL_Data[2], User_ID = Temp_SQL_Data[3], Password = Temp_SQL_Data[4])
+        
+        except error as e:
+            print(e)
+            return "User Not Found"
+        
+        
 
     def New_User(self): 
         statement = "INSERT INTO USER (Username, First_Name, Last_Name, Password) VALUES (?, ?, ?, ?)"
