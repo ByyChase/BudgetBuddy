@@ -9,7 +9,7 @@ class User:
         self.First_Name = First_Name   #String
         self.Last_Name = Last_Name     #String
         self.User_ID = User_ID         #Integer
-        self.Password = Password
+        self.Password = Password       #String
 
     def fetch(self):
         TempCursor = cursor()
@@ -22,8 +22,7 @@ class User:
         
             return User(Username = Temp_SQL_Data[0], First_Name = Temp_SQL_Data[1], Last_Name = Temp_SQL_Data[2], User_ID = Temp_SQL_Data[3], Password = Temp_SQL_Data[4])
         
-        except error as e:
-            print(e)
+        except:
             return "User Not Found"
         
         

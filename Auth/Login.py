@@ -35,13 +35,14 @@ def createNewUser():
     print("\n\nWelcome to BudgetBuddy!\nBelow we will get you setup with a new account!")
 
     Username = input("\n\nPlease input a Username: ")
-    temp_user = user(Username = Username)
+    Username = Username.upper()
+    temp_user = User(Username = Username)
     temp_user = temp_user.fetch()
     
     while temp_user != "User Not Found":
         
         Username = input("\n\nPlease input a Username: ")
-        temp_user = user(Username = Username)
+        temp_user = User(Username = Username)
         temp_user = temp_user.fetch()
         
 
