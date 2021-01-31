@@ -7,7 +7,7 @@ def LoadDB(db_file):
     global db
 
     if os.path.isfile('BudgetBuddy.db'):
-        print("Connecting to Database")
+        print("Connecting to Database... \n\n")
         db = sqlite3.connect(db_file)
     
     else:
@@ -20,12 +20,12 @@ def LoadDB(db_file):
 def CreateDB(c):
 
     try:
-        c.execute("""CREATE TABLE PAYCHECK (
+        c.execute("""CREATE TABLE INCOMESTATEMENT (
                         Date text,
                         Amount real,
                         UnBudgeted real,
                         Description text,
-                        PayCheck_ID integer,
+                        IncomeStatement_ID integer,
                         User_ID integer PRIMARY KEY,
                         foreign key(User_ID) references User(User_ID)
                         )""")
@@ -35,23 +35,23 @@ def CreateDB(c):
                         Amount real,
                         UnSpent real,
                         Description text,
-                        PayCheck_ID integer,
+                        IncomeStatement_ID integer,
                         Budget_ID integer PRIMARY KEY,
                         User_ID integer,
                         foreign key(USER_ID) references User(User_ID),
-                        foreign key(PayCheck_ID) references Paycheck(PayCheck_ID) 
+                        foreign key(IncomeStatement_ID) references INCOMESTATEMENT(IncomeStatement_ID) 
                         )""")
 
         c.execute("""CREATE TABLE EXPENSE (
                         Name text,
                         Description text,
                         Amount real,
-                        PayCheck_ID integer,
+                        IncomeStatement_ID integer,
                         Budget_ID integer,
                         Expense_ID integer PRIMARY KEY,
                         User_ID integer,
                         foreign key(USER_ID) references User(User_ID),
-                        foreign key(PayCheck_ID) references Paycheck(PayCheck_ID),
+                        foreign key(IncomeStatement_ID) references INCOMESTATEMENT(IncomeStatement_ID),
                         foreign key(Budget_ID) references Budget(Budget_ID)
                         )""")
 
