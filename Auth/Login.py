@@ -9,7 +9,6 @@ GlobalUser = None
 
 def Login():
 
-    print('--------------------------\n|WELCOME TO BUDGET BUDDY!|\n--------------------------')
     type = input("\n\nEnter the type of user you are: \n\n1)Existing User \n2)New User\n\nYour Input: ")
 
     if type == "0":
@@ -35,7 +34,8 @@ def Login():
         return user
 
     else:
-        exit()
+       print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
+       Login()
 
 
 def createNewUser():
