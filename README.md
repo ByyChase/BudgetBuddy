@@ -2,8 +2,8 @@
 
 BudgetBuddy is a Python program that allows for easy budgeting of funds that you receive. 
 
-Running Budget Buddy
- ---
+## Running Budget Buddy ##
+
  
  Download the repository from the Web GUI or clone it using the following command:
  
@@ -13,10 +13,16 @@ Running Budget Buddy
  
  `python3 BudgetBuddy.py`
  
- Requirements
- ---
+ ## Requirements ##
+ 
  All the requirements to run the program are located in the `Requirements.txt` file in the repository. 
  
  You can install the requirements using the following command from the main directory:
  
  `pip install -r requirements.txt`
+ 
+ ## What Currently Works ##
+
+* Creation of the Database 
+* Creation of User Accounts
+* Logging into Accounts
