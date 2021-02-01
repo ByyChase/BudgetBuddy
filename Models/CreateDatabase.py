@@ -25,8 +25,8 @@ def CreateDB(c):
                         Amount real,
                         UnBudgeted real,
                         Description text,
-                        IncomeStatement_ID integer,
-                        User_ID integer PRIMARY KEY,
+                        IncomeStatement_ID integer PRIMARY KEY,
+                        User_ID int,
                         foreign key(User_ID) references User(User_ID)
                         )""")
 
@@ -37,7 +37,7 @@ def CreateDB(c):
                         Description text,
                         IncomeStatement_ID integer,
                         Budget_ID integer PRIMARY KEY,
-                        User_ID integer,
+                        User_ID int,
                         foreign key(USER_ID) references User(User_ID),
                         foreign key(IncomeStatement_ID) references INCOMESTATEMENT(IncomeStatement_ID) 
                         )""")
