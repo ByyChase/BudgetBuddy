@@ -1,6 +1,6 @@
-from Models.CreateDatabase import cursor
-from Models.CreateDatabase import commit
-from Models.CreateDatabase import dict_factory
+from Models.LoadDatabase import cursor
+from Models.LoadDatabase import commit
+from Models.LoadDatabase import dict_factory
 import datetime
 from money import Money
 

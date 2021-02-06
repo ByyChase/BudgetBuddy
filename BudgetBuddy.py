@@ -1,8 +1,8 @@
 import sqlite3, time, os
-from Models.CreateDatabase import LoadDB
+from Models.LoadDatabase import LoadDB
 from Auth.Login import Login
-from Models.CreateDatabase import close
-from Models.CreateDatabase import commit
+from Models.LoadDatabase import close
+from Models.LoadDatabase import commit
 from Models.IncomeStatement import IncomeStatement
 
 #Global Variables 
