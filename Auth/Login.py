@@ -30,7 +30,6 @@ def Login():
     hashedPassword = user.Password
     
     if bcrypt.checkpw(Password.encode('utf-8'), hashedPassword):
-        print('Allow Login')
         return user
 
     else:
