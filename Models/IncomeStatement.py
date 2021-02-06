@@ -70,21 +70,17 @@ class IncomeStatement:
         Amount = input("\nPlease input the amount of the income (Please use standard money input)\n\nInput: $")
         GoodMoney = False
         try: 
-            Amount = Money(Amount, currency='USD')
-            Amount_Double = float(str(Amount)[5:])
-            print(Amount_Double)
+            Amount = "{:.2f}".format(float(Amount))
             GoodMoney = True
-            print(Amount)
+        
             
         except Exception as e:
             print(e)
             while GoodMoney == False: 
-                Amount = input("\nThat format didn't work, please try again (Please use standard money input)\n\nInput: $")
+                Amount = input("\nThat format didn't work, please try again (Please use standard money input without commas)\n\nInput: $")
                 
                 try: 
-                    Amount = Money(Amount, currency='USD')
-                    Amount_String = str(Amount)[5:]
-                    Amount_Double = float(Amount_String)
+                    Amount = "{:.2f}".format(float(Amount))
                     GoodMoney = True
 
                 except Exception as e:
@@ -93,11 +89,11 @@ class IncomeStatement:
         Description = input("\nPlease enter a short description of the income.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
         Date_String = str(Date)
         print(Date_String)
-        Temp_IncomeStatement = IncomeStatement(Date = Date_String, Amount = Amount_Double, UnBudgeted = Amount_Double, Description = Description, User_ID = user.User_ID)    
+        Temp_IncomeStatement = IncomeStatement(Date = Date_String, Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID)    
         Temp_IncomeStatement.New_IncomeStatement() 
         
         print("\n\nHere is your statement:\n")
-        print("Date: " + IncomeStatement.Format_Date(Date) + "\nDescription: " + Description + "\nAmount: $" + str(Amount_Double) + "\n\n")
+        print("Date: " + IncomeStatement.Format_Date(Date) + "\nDescription: " + Description + "\nAmount: $" + Amount + "\n\n")
         
         return
     
