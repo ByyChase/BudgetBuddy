@@ -17,10 +17,20 @@ def Login():
     #REMOVE FOR PRODUCTION
     #This is a small clause for testing purposes to bypass the login system.
     elif type == "chase":
-        return User.fetch(Username = 'ByyChase')
+        user = User.fetch(Username = 'BYYCHASE')
+        return user 
 
     while type != "1" and type != "2" and type != "0":
         type = input("\n\nThe only choices are '1' or '2': \n\n1)Existing User \n2)New User\n\nYour Input: ")
+
+        if type == "0":
+        exit()
+
+        #REMOVE FOR PRODUCTION
+        #This is a small clause for testing purposes to bypass the login system.
+        elif type == "chase":
+            user = User.fetch(Username = 'BYYCHASE')
+            return user 
   
     if type == "2":
         createNewUser()
