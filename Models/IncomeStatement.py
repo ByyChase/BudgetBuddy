@@ -6,20 +6,89 @@ from money import Money
 
 
 class IncomeStatement:
+    """
+    A class used to represent an Animal
 
-    def __init__(self, Date=None, Amount=None, Description=None, IncomeStatement_ID=None, Budget_ID = None, UnBudgeted=None, User_ID=None):
+    ...
+
+    Attributes
+    ----------
+    Date : str
+        a date time object formated as a string to store in the data base
+    Amount : float
+        A float used to store the initial amount of the income statement
+    Description : str
+        The user inputed description of the income statement 
+    IncomeStatement_ID : int
+        the unique identifier and primary key of the income statement 
+    UnBudgeted : float   
+        the amount of money in the income statement that has not been put towards 
+        a budget 
+    User_ID : int
+        The unique identifier of the user that owns the income statement
+
+    """  
+
+
+    def __init__(self, Date=None, Amount=None, Description=None, IncomeStatement_ID=None, UnBudgeted=None, User_ID=None):
+
+        """
+        Parameters
+        ----------
+        Date : str
+            a date time object formated as a string to store in the data base
+        Amount : float
+            A float used to store the initial amount of the income statement
+        Description : str
+            The user inputed description of the income statement 
+        IncomeStatement_ID : int
+            the unique identifier and primary key of the income statement 
+        UnBudgeted : float   
+            the amount of money in the income statement that has not been put towards 
+            a budget 
+        User_ID : int
+            The unique identifier of the user that owns the income statement
+
+        """  
         
         self.Date = Date                                #String
         self.Amount = Amount                            #Double
         self.Description = Description                  #String
-        self.IncomeStatement_ID = IncomeStatement_ID    #String
+        self.IncomeStatement_ID = IncomeStatement_ID    #Integer
         self.UnBudgeted = UnBudgeted                    #Double
         self.User_ID = User_ID                          #Integer
 
     db_fetch = "SELECT * FROM INCOMESTATEMENT WHERE "
 
     def fetch(**KWARGS):
+
+        """
+        This method is used to fetch IncomeStatement objects from the database.
+        In all reality this method requires the User_ID to be passed in to work well.
+        But to be safe and to cover all of the options I may need to look up different
+        types of look ups.
+
+
+        Parameters
+        ----------
+        Date : str
+            a date time object formated as a string to store in the data base
+        Amount : float
+            A float used to store the initial amount of the income statement
+        Description : str
+            The user inputed description of the income statement 
+        IncomeStatement_ID : int
+            the unique identifier and primary key of the income statement 
+        UnBudgeted : float   
+            the amount of money in the income statement that has not been put towards 
+            a budget 
+        User_ID : int
+            The unique identifier of the user that owns the income statement
+
+        """ 
         
+        #I have no idea what this stuff does, it was written by a classmate for 
+        # another class project we worked on together
         elements = []
         db_fetch = IncomeStatement.db_fetch
         
@@ -27,36 +96,70 @@ class IncomeStatement:
             
             db_fetch += "\"{}\"=?".format(k)
             elements.append(v)
-            
+
+        #Pulling data from database for an Income Statement   
         Temp_SQL_Data = cursor().execute(db_fetch, (elements)).fetchone()
             
+        #If something was able to be found it will return an IncomeStatement object 
         if Temp_SQL_Data:
             return IncomeStatement(Date = Temp_SQL_Data[0], Amount = Temp_SQL_Data[1], UnBudgeted = Temp_SQL_Data[2], Description = Temp_SQL_Data[3], IncomeStatement_ID = Temp_SQL_Data[4], User_ID = Temp_SQL_Data[5])
-        
+        #If nothing was found a 0 will be returned
         else:
-            return "Income Statement Not Found"
+            return 0
         
         
-    def New_IncomeStatement(self): 
+    def Commit_IncomeStatement(self): 
         
+        """
+        This method is used to input a new IncomeStatement into the database.
+
+
+        Parameters
+        ----------
+        self : IncomeStatement Object 
+            A fully created/populated income statement object
+
+        """ 
+
         statement = "INSERT INTO INCOMESTATEMENT (Date, Amount, UnBudgeted, Description, User_ID) VALUES (?, ?, ?, ?, ?)"
         cursor().execute(statement, (self.Date, self.Amount, self.UnBudgeted, self.Description, self.User_ID))
         commit()
         
     def Create(user):
+
+        """
+        This method is used to walk a user through inputting the info needed to create 
+        an income statement 
+
+
+        Parameters
+        ----------
+        user : User Object 
+            A fully created/populated user object. This is gotten and passed from the Auth.Login file.
+            This is mainly needed for the User_ID to tie the income statement to the user
+
+        """ 
+
         
-        #Asking the user for their input 
+        #Asking the user for their input for the date of their income
         Date = input("\nPlease input the date you received the income (Please use the MM/DD/YYYY format): ")
         GoodDate = False
         
+        #Trying to turn the date the user put in into a date time object 
+        #If it works then GoodDate is set to True and the program won't fall into the while 
+        #loop below for checking user data
         try:
             Date = datetime.datetime.strptime(Date,'%m/%d/%Y')
             GoodDate = True
             print(Date)
-            
+
+        #This is just here so the try command doesn't yell at me    
         except:
             pass
         
+        #If the date entered by the user wasn't able to be put into a date time object this loop will run 
+        #It will run the same code above but will keep running until the object is able to be created 
+        #by the users input
         while GoodDate == False:
             Date = input("\nPlease input the date using the correct formatting (Please use the MM/DD/YYYY format)\n\nInput: ")
 
@@ -66,16 +169,20 @@ class IncomeStatement:
 
             except:
                 pass
-            
+
+        #Asking the user to enter in the money amount of their income statement
         Amount = input("\nPlease input the amount of the income (Please use standard money input)\n\nInput: $")
         GoodMoney = False
+
+        #This will try to format the input into the ##.## format. If it can not format it into a two decimal format then it will fail
+        #and will run the accept statement bwloe
         try: 
             Amount = "{:.2f}".format(float(Amount))
             GoodMoney = True
         
-            
+        #This will only run if the amount the user input wasn't able to be formated correctly 
         except Exception as e:
-            print(e)
+            #This loop will run until the input of the user is able to be formated correctly for storage
             while GoodMoney == False: 
                 Amount = input("\nThat format didn't work, please try again (Please use standard money input without commas)\n\nInput: $")
                 
@@ -85,19 +192,34 @@ class IncomeStatement:
 
                 except Exception as e:
                     print(e)
-                
+
+        #Asking the user to input a description for their paycheck. This is one of the key ways that users will use determine what the paycheck is       
         Description = input("\nPlease enter a short description of the income.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
-        Date_String = str(Date)
-        print(Date_String)
-        Temp_IncomeStatement = IncomeStatement(Date = Date_String, Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID)    
-        Temp_IncomeStatement.New_IncomeStatement() 
+
+        #creation of the new income statement
+        Temp_IncomeStatement = IncomeStatement(Date = str(Date), Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID).Commit_IncomeStatement()   
         
+        #printing the income statement out to the user
         print("\n\nHere is your statement:\n")
         print("Date: " + IncomeStatement.Format_Date(Date) + "\nDescription: " + Description + "\nAmount: $" + Amount + "\n\n")
         
         return
     
     def Format_Date(Date):
+
+        """
+        This method is used to convert a Date Time Object into a MM/DD/YYYY formated string. This 
+        is really only ever used to convert the info for output purposes. This may get moved to 
+        another file if it gets used for multiple other classes, or it may just stay here.
+
+
+        Parameters
+        ----------
+        Date : DateTime Object 
+            A date time object that will be converted to a printable MM/DD/YYYY formated string
+
+        """
+
         Date_Split_From_DateTime_Object = str(Date.date()).split(' ')
         Date = Date_Split_From_DateTime_Object[0].split('-')
         Date = Date[1] + "/" + Date[2] + "/" + Date[0]
