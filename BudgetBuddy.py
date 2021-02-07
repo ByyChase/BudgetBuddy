@@ -54,7 +54,8 @@ def RunApp(user):
                     pass
 
                 elif IncomeStatement_Choice == 3:
-                    IncomeStatement.get_users_statements(user)
+                    IncomeStatement.view_user_statements(user)
+                    
                     pass
 
                 else:

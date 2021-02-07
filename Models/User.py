@@ -108,5 +108,7 @@ class User:
         statement = "INSERT INTO USER (Username, First_Name, Last_Name, Password) VALUES (?, ?, ?, ?)"
         cursor().execute(statement, (self.Username, self.First_Name, self.Last_Name, self.Password,))
         commit()
+
+        
         
         

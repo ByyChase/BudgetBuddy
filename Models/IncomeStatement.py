@@ -160,6 +160,25 @@ class IncomeStatement:
         else:
             return 0
 
+
+    def view_user_statements(user):
+
+        user_statements = IncomeStatement.get_users_statements(user)
+
+        print("\n\nHere are your statements: \n")
+        count = 1
+
+        for x in user_statements:
+            count += 1
+            print("\nStatement " + str(count))
+            print("Date: " + str(x.Date))
+            print("Description: " + str(x.Description))
+            print("Amount: $" + str(x.Amount))
+            print("Unbudgeted: $" + str(x.UnBudgeted))
+
+        input("\nPlease hit enter when you would like to continue....")
+
+
            
     def commit_incomestatement(self): 
         
