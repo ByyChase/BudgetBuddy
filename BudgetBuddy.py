@@ -1,6 +1,6 @@
 import sqlite3, time, os
-from Models.LoadDatabase import LoadDB
-from Auth.Login import Login
+from Models.LoadDatabase import load_DB
+from Auth.Login import login
 from Models.LoadDatabase import close
 from Models.LoadDatabase import commit
 from Models.IncomeStatement import IncomeStatement
@@ -11,16 +11,18 @@ from Models.IncomeStatement import IncomeStatement
 def RunApp(user):
     
     if user == None:
-        LoadDB(os.getcwd() + '/BudgetBuddy.db')
+        load_DB(os.getcwd() + '/BudgetBuddy.db')
         user = None
         print('--------------------------\n|WELCOME TO BUDGET BUDDY!|\n--------------------------') 
         try:   
-            user = Login()
+            user = login()
             cont = True
             
-        except:
+        except Exception as e:
+            print(e)
             print("Looks like the program ran into a bad error, we are going to restart the app for you")
-            RunApp()
+            user = None
+            RunApp(user)
 
     elif user != None:
         cont = True
@@ -46,13 +48,13 @@ def RunApp(user):
                     IncomeStatement_Choice = int(input("\n\nPlease only select one of these choices: \n\n1)Create a New Income Statement \n2)Edit an Existing Income Statement \n3)View Your Existing Income Statements \n4)Return to the Main Menu\n\nYour Input:"))
 
                 if IncomeStatement_Choice == 1:
-                    IncomeStatement.Create(user)
+                    IncomeStatement.create(user)
 
                 elif IncomeStatement_Choice == 2:
                     pass
 
                 elif IncomeStatement_Choice == 3:
-                    IncomeStatement.get_Users_Statements(user)
+                    IncomeStatement.get_users_statements(user)
                     pass
 
                 else:

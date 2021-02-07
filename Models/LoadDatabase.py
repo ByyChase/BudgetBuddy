@@ -1,9 +1,9 @@
 import sqlite3, os
-from Models.CreateDatabase import CreateDB
+from Models.CreateDatabase import create_DB
 
 db = None
 
-def LoadDB(db_file):
+def load_DB(db_file):
 
     global db
 

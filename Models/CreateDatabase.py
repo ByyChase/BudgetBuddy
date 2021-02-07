@@ -1,4 +1,4 @@
-def CreateDB(c):
+def create_DB(c):
 
     try:
         c.execute("""CREATE TABLE INCOMESTATEMENT (

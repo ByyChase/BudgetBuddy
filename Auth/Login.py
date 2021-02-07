@@ -7,7 +7,7 @@ from Models.User import User
 GlobalUser = None
 
 
-def Login():
+def login():
 
     type = input("\n\nEnter the type of user you are: \n\n1)Existing User \n2)New User\n\nYour Input: ")
 
@@ -24,7 +24,7 @@ def Login():
         type = input("\n\nThe only choices are '1' or '2': \n\n1)Existing User \n2)New User\n\nYour Input: ")
 
         if type == "0":
-        exit()
+            exit()
 
         #REMOVE FOR PRODUCTION
         #This is a small clause for testing purposes to bypass the login system.
@@ -33,7 +33,7 @@ def Login():
             return user 
   
     if type == "2":
-        createNewUser()
+        create_new_user()
  
     if type == "0":
         exit()
@@ -49,10 +49,10 @@ def Login():
 
     else:
        print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
-       Login()
+       login()
 
 
-def createNewUser():
+def create_new_user():
 
     print("\n\nWelcome to BudgetBuddy!\nBelow we will get you setup with a new account!")
 
@@ -79,7 +79,7 @@ def createNewUser():
 
         salt = bcrypt.gensalt()
         CryptPassword =  bcrypt.hashpw(Password.encode('utf-8'), salt)
-        User(Username = Username.upper(), First_Name = First_Name.upper(), Last_Name = Last_Name.upper(), Password = CryptPassword).Commit_User()
+        User(Username = Username.upper(), First_Name = First_Name.upper(), Last_Name = Last_Name.upper(), Password = CryptPassword).commit_user()
 
     print("\nTIME TO LOGIN\n")    
     

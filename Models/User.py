@@ -85,15 +85,15 @@ class User:
             db_fetch += "\"{}\"=?".format(k)
             elements.append(v)
             
-        Temp_SQL_Data = cursor().execute(db_fetch, (elements)).fetchone()
+        temp_SQL_data = cursor().execute(db_fetch, (elements)).fetchone()
             
-        if Temp_SQL_Data:
-            return User(Username = Temp_SQL_Data[0], First_Name = Temp_SQL_Data[1], Last_Name = Temp_SQL_Data[2], User_ID = Temp_SQL_Data[4], Password = Temp_SQL_Data[3])
+        if temp_SQL_data:
+            return User(Username = temp_SQL_data[0], First_Name = temp_SQL_data[1], Last_Name = temp_SQL_data[2], User_ID = temp_SQL_data[4], Password = temp_SQL_data[3])
         else:
             return "User Not Found"
         
 
-    def Commit_User(self): 
+    def commit_user(self): 
 
         """
         This method is used to input a new User into the database.

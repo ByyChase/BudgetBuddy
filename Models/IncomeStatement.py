@@ -107,18 +107,18 @@ class IncomeStatement:
             elements.append(v)
 
         #Pulling data from database for an Income Statement   
-        Temp_SQL_Data = cursor().execute(db_fetch, (elements)).fetchone()
+        temp_SQL_data = cursor().execute(db_fetch, (elements)).fetchone()
             
         #If something was able to be found it will return an IncomeStatement object 
-        if Temp_SQL_Data:
-            temp_income_statement_object = IncomeStatement(Date = Temp_SQL_Data[0], Amount = Temp_SQL_Data[1], UnBudgeted = Temp_SQL_Data[2], Description = Temp_SQL_Data[3], IncomeStatement_ID = Temp_SQL_Data[4], User_ID = Temp_SQL_Data[5])
+        if temp_SQL_data:
+            temp_income_statement_object = IncomeStatement(Date = temp_SQL_data[0], Amount = temp_SQL_data[1], UnBudgeted = temp_SQL_data[2], Description = temp_SQL_data[3], IncomeStatement_ID = temp_SQL_data[4], User_ID = temp_SQL_data[5])
             return temp_income_statement_object
         #If nothing was found a 0 will be returned
         else:
             return 0
         
 
-    def get_Users_Statements(user):
+    def get_users_statements(user):
         """
         This method is used to retreive all of the IncomeStatement IDs from the database for a particular user 
         and then returns a list of IncomeStatement objects that belong to the user
@@ -161,7 +161,7 @@ class IncomeStatement:
             return 0
 
            
-    def Commit_IncomeStatement(self): 
+    def commit_incomestatement(self): 
         
         """
         This method is used to input a new IncomeStatement into the database.
@@ -178,9 +178,9 @@ class IncomeStatement:
         statement = "INSERT INTO INCOMESTATEMENT (Date, Amount, UnBudgeted, Description, User_ID) VALUES (?, ?, ?, ?, ?)"
         cursor().execute(statement, (self.Date, self.Amount, self.UnBudgeted, self.Description, self.User_ID))
         commit()
+
         
-        
-    def Create(user):
+    def create(user):
 
         """
         This method is used to walk a user through inputting the info needed to create 
@@ -253,14 +253,14 @@ class IncomeStatement:
         Description = input("\nPlease enter a short description of the income.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
 
         #creation of the new income statement
-        Temp_IncomeStatement = IncomeStatement(Date = str(Date), Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID).Commit_IncomeStatement()   
+        Temp_IncomeStatement = IncomeStatement(Date = str(Date), Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID).commit_incomestatement()   
         
         #printing the income statement out to the user
         print("\n\nHere is your statement:\n")
-        print("Date: " + IncomeStatement.Format_Date(Date) + "\nDescription: " + Description + "\nAmount: $" + Amount + "\n\n")
+        print("Date: " + IncomeStatement.format_date(Date) + "\nDescription: " + Description + "\nAmount: $" + Amount + "\n\n")
         
     
-    def Format_Date(Date):
+    def format_date(date):
 
         """
         This method is used to convert a Date Time Object into a MM/DD/YYYY formated string. This 
@@ -289,18 +289,21 @@ class IncomeStatement:
         """
         try:
 
-            Date_Split_From_DateTime_Object = str(Date.date()).split(' ')
-            Date = Date_Split_From_DateTime_Object[0].split('-')
-            Date = Date[1] + "/" + Date[2] + "/" + Date[0]
+            date_split_from_DateTime_object = str(Date.date()).split(' ')
+            date = date_split_from_DateTime_object[0].split('-')
+            date = date[1] + "/" + date[2] + "/" + date[0]
         
         except:
             pass
 
-        if Date:
-            return Date
+        if date:
+            return date
 
         else:
             return 0
+
+
+    
 
         
 
