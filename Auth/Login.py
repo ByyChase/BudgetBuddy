@@ -64,8 +64,7 @@ def createNewUser():
 
         salt = bcrypt.gensalt()
         CryptPassword =  bcrypt.hashpw(Password.encode('utf-8'), salt)
-        NewUser = User(Username = Username.upper(), First_Name = First_Name.upper(), Last_Name = Last_Name.upper(), Password = CryptPassword)
-        tempUser = NewUser.New_User()
+        User(Username = Username.upper(), First_Name = First_Name.upper(), Last_Name = Last_Name.upper(), Password = CryptPassword).Commit_User()
 
     print("\nTIME TO LOGIN\n")    
     
