@@ -34,7 +34,7 @@ def RunApp(user):
     while cont == True:
         
         
-        Menu_Choice = int(input("\nPlease choose what you would like to interact with: \n\n1)Income Statements\n2)Expenses \n3)Budgets \n4)Bank Accounts \n5)Your Account \n\nYour Input:"))
+        Menu_Choice = int(input("\nPlease choose what you would like to interact with: \n\n1)Income Statements\n2)Expenses \n3)Budgets \n4)Bank Accounts \n5)Your Account \n6)Exit the Program \n\nYour Input:"))
         
         if Menu_Choice == 1:
 
@@ -51,7 +51,7 @@ def RunApp(user):
                     IncomeStatement.create(user)
 
                 elif IncomeStatement_Choice == 2:
-                    pass
+                    IncomeStatement.edit_user_statements(user)
 
                 elif IncomeStatement_Choice == 3:
                     IncomeStatement.view_user_statements(user)
@@ -72,9 +72,11 @@ def RunApp(user):
         elif Menu_Choice == 4:
             
             pass
-
-        else:
-            
+        
+        elif Menu_Choice == 5:
+            pass
+        
+        elif Menu_Choice == 6:
             cont = False
 
 

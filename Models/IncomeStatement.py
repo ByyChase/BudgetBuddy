@@ -162,6 +162,24 @@ class IncomeStatement:
 
 
     def view_user_statements(user):
+        """
+        This method is used to output user Incomestatements to the command line
+
+        ...
+
+        Parameters
+        ----------
+        user: User Object
+            This is a user object mainly used to get the User_ID from the user
+            
+        ...
+        
+        Returns
+        -------
+        user_statements : List of IncomeStatements
+            This return is only used for the edit_user_statement function. 
+        """
+        
 
         user_statements = IncomeStatement.get_users_statements(user)
 
@@ -169,14 +187,68 @@ class IncomeStatement:
         count = 1
 
         for x in user_statements:
-            count += 1
             print("\nStatement " + str(count))
             print("Date: " + str(x.Date))
             print("Description: " + str(x.Description))
             print("Amount: $" + str(x.Amount))
             print("Unbudgeted: $" + str(x.UnBudgeted))
+            count += 1
 
         input("\nPlease hit enter when you would like to continue....")
+        
+        return user_statements
+    
+        
+    def edit_user_statements(user):
+        
+        cont = True
+        user_statements = IncomeStatement.view_user_statements(user)
+        
+        while cont:
+            user_selected_statement = input("Please enter the statement number you would like to edit (Enter 0 to return to the previous menu): \n\nYour Input: ")
+            user_selected_statement = int(user_selected_statement)
+        
+        
+            while user_selected_statement < 0 or user_selected_statement > len(user_statements):
+                user_selected_statement = input("\nSorry, that input wasn't a statement above, please enter another. \n\nYour Input: ")
+            
+            if user_selected_statement == 0:
+                return
+            
+            user_selected_statement =-1
+            cont2 = True
+            
+            print("\n\nDate: " + str(user_statements[user_selected_statement].Date))
+            print("Description: " + str(user_statements[user_selected_statement].Description))
+            print("Amount: $" + str(user_statements[user_selected_statement].Amount))
+            print("Unbudgeted: $" + str(user_statements[user_selected_statement].UnBudgeted))
+            
+            edit
+            
+            
+            
+            
+            
+            
+            
+            
+            count = 1
+            for x in user_statements:
+                print("\nStatement " + str(count))
+                print("Date: " + str(x.Date))
+                print("Description: " + str(x.Description))
+                print("Amount: $" + str(x.Amount))
+                print("Unbudgeted: $" + str(x.UnBudgeted))
+                count += 1
+            
+            
+            
+    
+    
+    
+        statement = "UPDATE INCOMESTATEMENT SET Date = ?, Amount = ?, Description = ?, IncomeStatement_ID = ?, UnBudgeted = ?, User_ID = ? WHERE User_ID = ?"
+        
+        
 
 
            
