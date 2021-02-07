@@ -26,12 +26,10 @@ class IncomeStatement:
         a budget 
     User_ID : int
         The unique identifier of the user that owns the income statement
-
     """  
 
 
     def __init__(self, Date=None, Amount=None, Description=None, IncomeStatement_ID=None, UnBudgeted=None, User_ID=None):
-
         """
         Parameters
         ----------
@@ -47,8 +45,7 @@ class IncomeStatement:
             the amount of money in the income statement that has not been put towards 
             a budget 
         User_ID : int
-            The unique identifier of the user that owns the income statement
-
+            The unique identifier of the user that owns the income statement        
         """  
         
         self.Date = Date                                #String
@@ -61,13 +58,13 @@ class IncomeStatement:
     db_fetch = "SELECT * FROM INCOMESTATEMENT WHERE "
 
     def fetch(**KWARGS):
-
         """
         This method is used to fetch IncomeStatement objects from the database.
         In all reality this method requires the User_ID to be passed in to work well.
         But to be safe and to cover all of the options I may need to look up different
         types of look ups.
 
+        ...
 
         Parameters
         ----------
@@ -85,6 +82,18 @@ class IncomeStatement:
         User_ID : int
             The unique identifier of the user that owns the income statement
 
+        ...
+
+        Returns
+        -------
+        temp_income_statement_object: IncomeStatement Object
+            This is returned if the fetch was successful in finding the requested 
+            object in the database 
+        
+        --or--
+
+        0 : int
+            This is returned if the object was not found in the database
         """ 
         
         #I have no idea what this stuff does, it was written by a classmate for 
@@ -102,17 +111,62 @@ class IncomeStatement:
             
         #If something was able to be found it will return an IncomeStatement object 
         if Temp_SQL_Data:
-            return IncomeStatement(Date = Temp_SQL_Data[0], Amount = Temp_SQL_Data[1], UnBudgeted = Temp_SQL_Data[2], Description = Temp_SQL_Data[3], IncomeStatement_ID = Temp_SQL_Data[4], User_ID = Temp_SQL_Data[5])
+            temp_income_statement_object = IncomeStatement(Date = Temp_SQL_Data[0], Amount = Temp_SQL_Data[1], UnBudgeted = Temp_SQL_Data[2], Description = Temp_SQL_Data[3], IncomeStatement_ID = Temp_SQL_Data[4], User_ID = Temp_SQL_Data[5])
+            return temp_income_statement_object
         #If nothing was found a 0 will be returned
         else:
             return 0
         
-        
+
+    def get_Users_Statements(user):
+        """
+        This method is used to retreive all of the IncomeStatement IDs from the database for a particular user 
+        and then returns a list of IncomeStatement objects that belong to the user
+
+        ...
+
+        Parameters
+        ----------
+        user: User Object
+            This is a user object mainly used to get the User_ID from the user
+
+        ...
+
+        Returns
+        -------
+        income_statements : List of IncomeStatement Objects 
+            this is returned if the database call was successful in finding any IncomeStatements for the User_ID provided
+
+        --or--
+
+        0 : int
+            This is returned if no data was able to be found or if something went wrong
+        """ 
+
+        #SQL statement for the database call 
+        statement = "SELECT * FROM INCOMESTATEMENT WHERE User_ID = ?"
+        #Call to the database 
+        rows = cursor().execute(statement, (user.User_ID,)).fetchall()
+        #Checking to see if data was returned from the database. If it is the data will be parsed and returned in a list 
+        #of IncomeStatement objects. If nothing is found 0 is returned
+        if rows:
+            income_statements = []
+            for x in rows:
+                temp_IncomeStatement = IncomeStatement(Date = x[0], Amount = x[1], UnBudgeted = x[2], Description = x[3], IncomeStatement_ID = x[4], User_ID = x[5])
+                income_statements.append(temp_IncomeStatement)
+            
+            return income_statements
+
+        else:
+            return 0
+
+           
     def Commit_IncomeStatement(self): 
         
         """
         This method is used to input a new IncomeStatement into the database.
 
+        ...
 
         Parameters
         ----------
@@ -125,12 +179,14 @@ class IncomeStatement:
         cursor().execute(statement, (self.Date, self.Amount, self.UnBudgeted, self.Description, self.User_ID))
         commit()
         
+        
     def Create(user):
 
         """
         This method is used to walk a user through inputting the info needed to create 
         an income statement 
 
+        ...
 
         Parameters
         ----------
@@ -203,7 +259,6 @@ class IncomeStatement:
         print("\n\nHere is your statement:\n")
         print("Date: " + IncomeStatement.Format_Date(Date) + "\nDescription: " + Description + "\nAmount: $" + Amount + "\n\n")
         
-        return
     
     def Format_Date(Date):
 
@@ -212,16 +267,43 @@ class IncomeStatement:
         is really only ever used to convert the info for output purposes. This may get moved to 
         another file if it gets used for multiple other classes, or it may just stay here.
 
+        ...
 
         Parameters
         ----------
         Date : DateTime Object 
-            A date time object that will be converted to a printable MM/DD/YYYY formated string
+            A date time object that stores the date a user received an income
+
+        ... 
+
+        Returns
+        -------
+        Date : str
+            A string that is used to print out to the user in a readable format. The format is MM/DD/YYYY
+
+        --or--
+
+        0 : int
+            This is returned if something went wrong with the date conversion
 
         """
+        try:
 
-        Date_Split_From_DateTime_Object = str(Date.date()).split(' ')
-        Date = Date_Split_From_DateTime_Object[0].split('-')
-        Date = Date[1] + "/" + Date[2] + "/" + Date[0]
-        return Date
+            Date_Split_From_DateTime_Object = str(Date.date()).split(' ')
+            Date = Date_Split_From_DateTime_Object[0].split('-')
+            Date = Date[1] + "/" + Date[2] + "/" + Date[0]
+        
+        except:
+            pass
+
+        if Date:
+            return Date
+
+        else:
+            return 0
+
+        
+
+    
+    
         
