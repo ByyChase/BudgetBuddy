@@ -205,7 +205,10 @@ class IncomeStatement:
         user_statements = IncomeStatement.view_user_statements(user)
         
         while cont:
-            user_selected_statement = input("Please enter the statement number you would like to edit (Enter 0 to return to the previous menu): \n\nYour Input: ")
+            user_selected_statement = input("\nPlease enter the statement number you would like to edit (Enter 0 to return to the previous menu): \n\nYour Input: ")
+            while user_selected_statement == "":
+                user_selected_statement = input("\nPlease enter one of the valid options (Enter 0 to return to the previous menu): \n\nYour Input: ")
+
             user_selected_statement = int(user_selected_statement)
         
         
@@ -218,20 +221,94 @@ class IncomeStatement:
             user_selected_statement =-1
             cont2 = True
             
-            print("\n\nDate: " + str(user_statements[user_selected_statement].Date))
-            print("Description: " + str(user_statements[user_selected_statement].Description))
-            print("Amount: $" + str(user_statements[user_selected_statement].Amount))
-            print("Unbudgeted: $" + str(user_statements[user_selected_statement].UnBudgeted))
-            
-            edit
-            
-            
-            
-            
-            
-            
-            
-            
+
+            while cont2:
+
+                print("\n-----------------------|Income Statement Info|-----------------------")
+                print("\n\nDate: " + str(user_statements[user_selected_statement].Date))
+                print("Description: " + str(user_statements[user_selected_statement].Description))
+                print("Amount: $" + str(user_statements[user_selected_statement].Amount))
+
+                user_edit_choice = input("\nPlease enter the number of what you would like to enter: \n\n1)Date\n2)Description\n3)Amount\n4)Done Editing\n\nYour Input: ")
+                while user_edit_choice == "":
+                    user_edit_choice = input("\nPlease enter one of the valid options: \n\n1)Date\n2)Description\n3)Amount\n4)Done Editing\n\nYour Input: ")
+
+                user_edit_choice = int(user_edit_choice)
+
+                if user_edit_choice == 4:
+                    cont2 = False
+                    statement = "UPDATE INCOMESTATEMENT SET Date = ?, Amount = ?, Description = ?, IncomeStatement_ID = ?, UnBudgeted = ?, User_ID = ? WHERE  IncomeStatement_ID = ?"
+                    cursor().execute(statement, (user_statements[user_selected_statement].Date, user_statements[user_selected_statement].Amount, user_statements[user_selected_statement].Description, user_statements[user_selected_statement].IncomeStatement_ID, user_statements[user_selected_statement].UnBudgeted, user_statements[user_selected_statement].User_ID, user_statements[user_selected_statement].IncomeStatement_ID,))
+
+
+
+                elif user_edit_choice == 1:
+                    #Asking the user for their input for the date of their income
+                    date = input("\nPlease input the new date you received the income (Please use the MM/DD/YYYY format): ")
+                    gooddate = False
+                    
+                    #Trying to turn the date the user put in into a date time object 
+                    #If it works then GoodDate is set to True and the program won't fall into the while 
+                    #loop below for checking user data
+                    try:
+                        date = datetime.datetime.strptime(date,'%m/%d/%Y')
+                        gooddate = True
+                        
+
+                    #This is just here so the try command doesn't yell at me    
+                    except:
+                        pass
+                    
+                    #If the date entered by the user wasn't able to be put into a date time object this loop will run 
+                    #It will run the same code above but will keep running until the object is able to be created 
+                    #by the users input
+                    while gooddate == False:
+                        date = input("\nPlease input the date using the correct formatting (Please use the MM/DD/YYYY format)\n\nInput: ")
+
+                        try:
+                            date = datetime.datetime.strptime(date,'%m/%d/%Y')
+                            gooddate = True
+
+                        except:
+                            pass
+
+                    user_statements[user_selected_statement].Date = date
+
+                elif user_edit_choice == 2:
+                    #Asking the user to input a description for their paycheck. This is one of the key ways that users will use determine what the paycheck is       
+                    description = input("\nPlease enter a short description of the income.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
+                    
+                    while description == "":
+                        description = input("\nPlease enter something, an empty input is not allowed.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
+
+                    user_statements[user_selected_statement].Description = description
+
+                elif user_edit_choice == 3:
+                    #Asking the user to enter in the money amount of their income statement
+                    amount = input("\nPlease input the amount of the income (Please use standard money input)\n\nInput: $")
+                    goodmoney = False
+
+                    #This will try to format the input into the ##.## format. If it can not format it into a two decimal format then it will fail
+                    #and will run the accept statement bwloe
+                    try: 
+                        amount = "{:.2f}".format(float(Amount))
+                        goodmoney = True
+                    
+                    #This will only run if the amount the user input wasn't able to be formated correctly 
+                    except Exception as e:
+                        #This loop will run until the input of the user is able to be formated correctly for storage
+                        while goodmoney == False: 
+                            amount = input("\nThat format didn't work, please try again (Please use standard money input without commas)\n\nInput: $")
+                            
+                            try: 
+                                amount = "{:.2f}".format(float(Amount))
+                                goodmoney = True
+
+                            except Exception as e:
+                                print(e)
+
+                    user_statements[user_selected_statement].Amount = amount
+
             count = 1
             for x in user_statements:
                 print("\nStatement " + str(count))
@@ -242,16 +319,7 @@ class IncomeStatement:
                 count += 1
             
             
-            
-    
-    
-    
-        statement = "UPDATE INCOMESTATEMENT SET Date = ?, Amount = ?, Description = ?, IncomeStatement_ID = ?, UnBudgeted = ?, User_ID = ? WHERE User_ID = ?"
-        
-        
-
-
-           
+          
     def commit_incomestatement(self): 
         
         """
@@ -342,6 +410,11 @@ class IncomeStatement:
 
         #Asking the user to input a description for their paycheck. This is one of the key ways that users will use determine what the paycheck is       
         Description = input("\nPlease enter a short description of the income.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
+         
+        while Description == "":
+            Description = input("\nPlease enter something, an empty input is not allowed.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
+
+
 
         #creation of the new income statement
         Temp_IncomeStatement = IncomeStatement(Date = str(Date), Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID).commit_incomestatement()   

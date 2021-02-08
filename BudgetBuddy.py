@@ -85,6 +85,7 @@ def RunApp(user):
     print("\n\nClosing DataBase...")
     print("\nHave a nice day! ")
     close()
+    exit()
 
 
 user = None
