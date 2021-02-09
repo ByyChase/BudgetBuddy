@@ -5,6 +5,6 @@ class Budget:
         self.Amount = Amount             #Double    
         self.UnSpent = UnSpent           #Double  
         self.Description = Description   #String 
-        self.Paycheck_ID = Paycheck_ID   #Integer
+        self.IncomeStatement_ID = IncomeStatement_ID   #Integer
         self.Budget_ID = Budget_ID       #Integer
         self.User_ID = User_ID           #Integer
