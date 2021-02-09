@@ -106,8 +106,9 @@ class IncomeStatement:
             db_fetch += "\"{}\"=?".format(k)
             elements.append(v)
 
-        #Pulling data from database for an Income Statement   
+        #Pulling data from database for an Income Statement 
         temp_SQL_data = cursor().execute(db_fetch, (elements)).fetchone()
+
             
         #If something was able to be found it will return an IncomeStatement object 
         if temp_SQL_data:
@@ -186,8 +187,15 @@ class IncomeStatement:
         user_statements : List of IncomeStatements
             This return is only used for the edit_user_statement function. 
         """
+        try:
 
-        user_statements = IncomeStatement.get_users_statements(user)
+            user_statements = IncomeStatement.get_users_statements(user)
+
+        except Exception as e:
+
+            logging.exception("Unable to get list of User IncomeStatements")
+            return
+        
         print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
         print("Here are your statements: \n")
         count = 1
@@ -230,8 +238,15 @@ class IncomeStatement:
         
         else:
 
-            print("Only One Edit")
+            
+            try:
+
             user_statements = IncomeStatement.get_users_statements(user)
+
+            except Exception as e:
+
+                logging.exception("Unable to get list of User IncomeStatements")
+                return
 
 
         def edit_incomestatement_instance(user_selected_statement):
@@ -248,21 +263,31 @@ class IncomeStatement:
                 user_edit_choice = input("\nPlease enter the number of what you would like to enter: \n\n1)Date\n2)Description\n3)Amount\n4)Done Editing\n\nYour Input: ")
 
                 while user_edit_choice == "":
+
                     user_edit_choice = input("\nPlease enter one of the valid options: \n\n1)Date\n2)Description\n3)Amount\n4)Done Editing\n\nYour Input: ")
 
                 user_edit_choice = int(user_edit_choice)
 
                 if user_edit_choice == 4:
 
-                    user_still_editing_selected_income_statement = False
-                    statement = "UPDATE INCOMESTATEMENT SET Date = ?, Amount = ?, Description = ?, IncomeStatement_ID = ?, UnBudgeted = ?, User_ID = ? WHERE  IncomeStatement_ID = ?"
-                    cursor().execute(statement, (user_statements[user_selected_statement].Date, user_statements[user_selected_statement].Amount, user_statements[user_selected_statement].Description, user_statements[user_selected_statement].IncomeStatement_ID, user_statements[user_selected_statement].UnBudgeted, user_statements[user_selected_statement].User_ID, user_statements[user_selected_statement].IncomeStatement_ID,))
-                    commit()
+                    try:
+
+                        user_still_editing_selected_income_statement = False
+                        statement = "UPDATE INCOMESTATEMENT SET Date = ?, Amount = ?, Description = ?, IncomeStatement_ID = ?, UnBudgeted = ?, User_ID = ? WHERE  IncomeStatement_ID = ?"
+                        cursor().execute(statement, (user_statements[user_selected_statement].Date, user_statements[user_selected_statement].Amount, user_statements[user_selected_statement].Description, user_statements[user_selected_statement].IncomeStatement_ID, user_statements[user_selected_statement].UnBudgeted, user_statements[user_selected_statement].User_ID, user_statements[user_selected_statement].IncomeStatement_ID,))
+                        commit()
 
                     #TODO : When the user edits an IncomeStatement, all of the budgets associated with the income statement have to be edited as well so money that doesn't
                     # exist for the user is not sitting inside of budgets 
 
+                    except Exception as e:
+
+                        print("\n\nUnable to commit that to the database, try again!\nIf this continues try retarting the app.")
+                        logging.exception("Unable to made update to database")
+
+
                 elif user_edit_choice == 1:
+
                     #Asking the user for their input for the date of their income
                     print("\n----------------------------------------------------------\n")
                     date = input("\nPlease input the new date you received the income (Please use the MM/DD/YYYY format): ")
@@ -272,41 +297,51 @@ class IncomeStatement:
                     #If it works then GoodDate is set to True and the program won't fall into the while 
                     #loop below for checking user dataBud
                     try:
+
                         date = datetime.datetime.strptime(date,'%m/%d/%Y')
                         gooddate = True
                         
                     #This is just here so the try command doesn't yell at me    
-                    except:
+                    except Exception as e:
+
+                        logging.exception("Date format not correct")
                         pass
                     
                     #If the date entered by the user wasn't able to be put into a date time object this loop will run 
                     #It will run the same code above but will keep running until the object is able to be created 
                     #by the users input
                     while gooddate == False:
+
                         print("\n----------------------------------------------------------\n")
                         date = input("\nPlease input the date using the correct formatting (Please use the MM/DD/YYYY format)\n\nInput: ")
 
                         try:
+
                             date = datetime.datetime.strptime(date,'%m/%d/%Y')
                             gooddate = True
 
                         except:
+
+                            logging.exception("Date format not correct")
                             pass
 
                     user_statements[user_selected_statement].Date = date
 
                 elif user_edit_choice == 2:
+
                     #Asking the user to input a description for their paycheck. This is one of the key ways that users will use determine what the paycheck is
                     # print("\n----------------------------------------------------------\n")       
                     description = input("\nPlease enter a short description of the income.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
                     
                     while description == "":
+
                         print("\n----------------------------------------------------------\n")
                         description = input("\nPlease enter something, an empty input is not allowed.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
 
                     user_statements[user_selected_statement].Description = description
 
                 elif user_edit_choice == 3:
+
                     #Asking the user to enter in the money amount of their income statement
                     print("\n----------------------------------------------------------\n")
                     amount = input("\nPlease input the amount of the income (Please use standard money input)\n\nInput: $")
@@ -315,6 +350,7 @@ class IncomeStatement:
                     #This will try to format the input into the ##.## format. If it can not format it into a two decimal format then it will fail
                     #and will run the accept statement bwloe
                     try: 
+
                         amount = "{:.2f}".format(float(amount))
                         goodmoney = True
                         change_income = True
@@ -322,17 +358,23 @@ class IncomeStatement:
                     #This will only run if the amount the user input wasn't able to be formated correctly 
                     except Exception as e:
 
+                        logging.exception("Money format not correct")
+
                         #This loop will run until the input of the user is able to be formated correctly for storage
                         while goodmoney == False:
+
                             print("\n----------------------------------------------------------\n")
                             amount = input("\nThat format didn't work, please try again (Please use standard money input without commas)\n\nInput: $")
                             
                             try: 
+
                                 amount = "{:.2f}".format(float(amount))
                                 goodmoney = True
                                 change_income = True
 
                             except Exception as e:
+
+                                logging.exception("Money format not correct")
                                 print(e)
 
                     user_statements[user_selected_statement].Amount = amount
@@ -341,6 +383,7 @@ class IncomeStatement:
         user_still_editing_income_statements = True
 
         if edit_single_statement != None:
+
             edit_incomestatement_instance(len(user_statements) -1)
             return
         
@@ -371,6 +414,7 @@ class IncomeStatement:
             count = 1
 
             for x in user_statements:
+                
                 print("\nStatement " + str(count) + ":")
                 print("Date: " + str(x.Date))
                 print("Description: " + str(x.Description))
@@ -458,14 +502,17 @@ class IncomeStatement:
         except Exception as e:
             #This loop will run until the input of the user is able to be formated correctly for storage
             while GoodMoney == False: 
+
                 print("\n----------------------------------------------------------\n")
                 Amount = input("\nThat format didn't work, please try again (Please use standard money input without commas)\n\nInput: $")
                 
                 try: 
+
                     Amount = "{:.2f}".format(float(Amount))
                     GoodMoney = True
 
                 except Exception as e:
+
                     print(e)
 
         #Asking the user to input a description for their paycheck. This is one of the key ways that users will use determine what the paycheck is 
@@ -473,18 +520,31 @@ class IncomeStatement:
         Description = input("\nPlease enter a short description of the income.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
          
         while Description == "":
+
             print("\n----------------------------------------------------------\n")
             Description = input("\nPlease enter something, an empty input is not allowed.\nThis, along with the date, will be how you have to recognize the income statement. Please be descriptive.\n\nInput:")
 
-        #creation of the new income statement
-        Temp_IncomeStatement = IncomeStatement(Date = str(Date), Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID).commit_incomestatement()   
-        
+        try: 
+
+            #creation of the new income statement
+            Temp_IncomeStatement = IncomeStatement(Date = str(Date), Amount = float(Amount), UnBudgeted = float(Amount), Description = Description, User_ID = user.User_ID).commit_incomestatement() 
+
+        except Exception as e:
+
+            logging.exception("Unable to commit new IncomeStatement to the database")
+            print("\n\nLooks like something went wrong. Try again!")
+            return
+            
+              
+            
         #printing the income statement out to the user
         print("\n\nHere is your statement:\n")
         print("Date: " + str(IncomeStatement.format_date(Date)) + "\nDescription: " + Description + "\nAmount: $" + Amount + "\n\n")
         user_accepts_entered_statement = True
         user_accepts_entered_statement_input = input("Does this statement look right to you? \n\n1) Yes \n2) No \n\nYour Input (Yes or No): ").lower()
+
         while user_accepts_entered_statement_input !=  "yes" and user_accepts_entered_statement_input != "no":
+
             user_accepts_entered_statement_input = input("\n\nPlease only enter accepted values...\nDoes this statement look right to you? \n\n1) Yes \n2) No \n\nYour Input (Yes or No): ")
 
         if user_accepts_entered_statement_input == "no":

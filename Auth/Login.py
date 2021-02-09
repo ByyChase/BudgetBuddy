@@ -1,27 +1,10 @@
 import bcrypt, getpass, logging
 from Models.User import User
 
-
-
-#Declare Global Variables
-GlobalUser = None
-
-
 def login():
 
-    type = input("\n\nEnter the type of user you are: \n\n1)Existing User \n2)New User\n\nYour Input: ")
-
-    if type == "0":
-        exit()
-
-    #REMOVE FOR PRODUCTION
-    #This is a small clause for testing purposes to bypass the login system.
-    elif type == "chase":
-        user = User.fetch(Username = 'BYYCHASE')
-        return user 
-
-    while type != "1" and type != "2" and type != "0":
-        type = input("\n\nThe only choices are '1' or '2': \n\n1)Existing User \n2)New User\n\nYour Input: ")
+    try:
+        type = input("\n\nEnter the type of user you are: \n\n1)Existing User \n2)New User\n\nYour Input: ")
 
         if type == "0":
             exit()
@@ -29,20 +12,71 @@ def login():
         #REMOVE FOR PRODUCTION
         #This is a small clause for testing purposes to bypass the login system.
         elif type == "chase":
-            user = User.fetch(Username = 'BYYCHASE')
-            return user 
-  
-    if type == "2":
-        create_new_user()
- 
-    if type == "0":
-        exit()
 
-    Username = input("\n\nPlease input your username: ")
-    Username = Username.upper()
-    Password = getpass.getpass()
-    user = User.fetch(Username = Username)
-    hashedPassword = user.Password
+            try:
+
+                user = User.fetch(Username = 'BYYCHASE')
+                return user 
+
+            except Exception as e:
+
+                logging.exception("Unable to retreive user Chase")
+                login()
+
+        while type != "1" and type != "2" and type != "0":
+            type = input("\n\nThe only choices are '1' or '2': \n\n1)Existing User \n2)New User\n\nYour Input: ")
+
+            if type == "0":
+                exit()
+
+            #REMOVE FOR PRODUCTION
+            #This is a small clause for testing purposes to bypass the login system.
+            elif type == "chase":
+
+                try:
+
+                    user = User.fetch(Username = 'BYYCHASE')
+                    return user 
+
+                except Exception as e:
+
+                    logging.exception("Unable to retreive user Chase")
+                    login()
+    
+        if type == "2":
+
+            create_new_user()
+    
+        if type == "0":
+
+            exit()
+        
+        logging.info("User type input successful")
+
+    except Exception as e:
+
+        logging.exception("Unable to get user input for user type during intial login")
+        login()
+
+    try:
+
+        Username = input("\n\nPlease input your username: ")
+        Username = Username.upper()
+        Password = getpass.getpass()
+
+        try:
+
+            user = User.fetch(Username = Username)
+
+        except Exception as e:
+
+            logging.exception("Failed Database call")
+
+        hashedPassword = user.Password
+        logging.info("User login info successful retrieved")
+
+    except Exception as e:
+        logging.exception("Unable to retreive user login info during login")
     
     if bcrypt.checkpw(Password.encode('utf-8'), hashedPassword):
         return user
@@ -64,7 +98,13 @@ def create_new_user():
     while temp_user != "User Not Found":
 
         Username = input("\n\nUsername Taken, Please input a new Username: ")
-        temp_user = User.fetch(Username = Username)
+        try:
+
+            temp_user = User.fetch(Username = Username)
+
+        except Exception as e:
+            logging.exception("Unable to fetch user from database")
+            login()
 
     First_Name = input("\nPlease input your first name: ")
     First_Name = First_Name.upper()
@@ -77,9 +117,16 @@ def create_new_user():
 
     if Password == Password2:
 
-        salt = bcrypt.gensalt()
-        CryptPassword =  bcrypt.hashpw(Password.encode('utf-8'), salt)
-        User(Username = Username.upper(), First_Name = First_Name.upper(), Last_Name = Last_Name.upper(), Password = CryptPassword).commit_user()
+        try:
+
+            salt = bcrypt.gensalt()
+            CryptPassword =  bcrypt.hashpw(Password.encode('utf-8'), salt)
+            User(Username = Username.upper(), First_Name = First_Name.upper(), Last_Name = Last_Name.upper(), Password = CryptPassword).commit_user()
+
+        except Exception as e:
+
+            logging.exception("Unable to commit new user to database")
+            login()
 
     print("\nTIME TO LOGIN\n")    
     

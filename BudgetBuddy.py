@@ -18,15 +18,9 @@ def RunApp(user):
         load_DB(os.getcwd() + '/BudgetBuddy.db')
         user = None
         print('--------------------------\n|WELCOME TO BUDGET BUDDY!|\n--------------------------') 
-        try:   
-            user = login()
-            cont = True
-            
-        except Exception as e:
-            print(e)
-            print("Looks like the program ran into a bad error, we are going to restart the app for you")
-            user = None
-            RunApp(user)
+        user = login()
+        cont = True
+    
 
     elif user != None:
         cont = True
