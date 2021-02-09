@@ -34,22 +34,26 @@ def RunApp(user):
     while cont == True:
         
         
-        Menu_Choice = int(input("\nPlease choose what you would like to interact with: \n\n1)Income Statements\n2)Expenses \n3)Budgets \n4)Bank Accounts \n5)Your Account \n6)Exit the Program \n\nYour Input:"))
+        Menu_Choice = input("\n\n-----------------------------------------------------\n|Please choose what you would like to interact with:|\n----------------------------------------------------- \n\n1)Income Statements\n2)Expenses \n3)Budgets \n4)Bank Accounts \n5)Your Account \n6)Exit the Program \n\nYour Input:")
         
+        while Menu_Choice == '':
+            Menu_Choice = input("\n\n-----------------------------------------------------\n|Please choose what you would like to interact with:|\n----------------------------------------------------- \n\n1)Income Statements\n2)Expenses \n3)Budgets \n4)Bank Accounts \n5)Your Account \n6)Exit the Program \n\nYour Input:")
+
+        Menu_Choice = int(Menu_Choice)
+
         if Menu_Choice == 1:
 
             cont1 = True
 
             while cont1 == True:
             
-                IncomeStatement_Choice = int(input("\n\nPlease select what you would like to do: \n\n1)Create a New Income Statement \n2)Edit an Existing Income Statement \n3)View Your Existing Income Statements \n4)Return to the Main Menu\n\nYour Input:"))
+                IncomeStatement_Choice = int(input("\n\n\n------------------------------------------\n|Please select what you would like to do:|\n------------------------------------------ \n\n1)Create a New Income Statement \n2)Edit an Existing Income Statement \n3)View Your Existing Income Statements \n4)Return to the Main Menu\n\nYour Input:"))
 
                 while IncomeStatement_Choice != 1 and IncomeStatement_Choice != 2 and IncomeStatement_Choice != 3 and IncomeStatement_Choice != 4:
-                    IncomeStatement_Choice = int(input("\n\nPlease only select one of these choices: \n\n1)Create a New Income Statement \n2)Edit an Existing Income Statement \n3)View Your Existing Income Statements \n4)Return to the Main Menu\n\nYour Input:"))
+                    IncomeStatement_Choice = int(input("\n\n\n------------------------------------------\n|Please only select one of these choices:|\n------------------------------------------ \n\n1)Create a New Income Statement \n2)Edit an Existing Income Statement \n3)View Your Existing Income Statements \n4)Return to the Main Menu\n\nYour Input:"))
 
                 if IncomeStatement_Choice == 1:
                     IncomeStatement.create(user)
-
                 elif IncomeStatement_Choice == 2:
                     IncomeStatement.edit_user_statements(user)
 
@@ -78,6 +82,8 @@ def RunApp(user):
         
         elif Menu_Choice == 6:
             cont = False
+
+        
 
 
 
