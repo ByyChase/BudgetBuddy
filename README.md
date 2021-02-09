@@ -29,14 +29,14 @@ BudgetBuddy is a Python program that allows for easy budgeting of funds that you
 * Creation of Income Statements
 * Viewing of Income Statements
 * Editing of Income Instances
+* Logging errors to external error log
 
  ## Next Feature Being Implemented ##
 
-* Logging errors to external error log
+* Creation of Bank Accounts
 
 ## In the Queue ##
 
-* Creation of Bank Accounts 
 * Linking IncomeStatement to Bank Account
 * Editing of Bank Accounts
 * Viewing Bank Accounts 
