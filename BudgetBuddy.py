@@ -11,8 +11,10 @@ from Models.IncomeStatement import IncomeStatement
 
 def RunApp(user):
 
+    #Loading the global defaults for logging
     logger()
     
+    #If the user object is empty, the the user is asked to login
     if user == None:
         logger()
         load_DB(os.getcwd() + '/BudgetBuddy.db')
@@ -21,14 +23,16 @@ def RunApp(user):
         user = login()
         cont = True
     
-
+    #If the user object is filled, the program will continue to the main menu
     elif user != None:
         cont = True
 
+    #If for something else happens, the program will be reset and start over
     else:
         user = None
         RunApp(user)
 
+    #Loop for the main menu
     while cont == True:
         
         
