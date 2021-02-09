@@ -3,14 +3,18 @@ from Models.LoadDatabase import load_DB
 from Auth.Login import login
 from Models.LoadDatabase import close
 from Models.LoadDatabase import commit
+from LogModule import logger
 from Models.IncomeStatement import IncomeStatement
 
 #Global Variables 
 
 
 def RunApp(user):
+
+    logger()
     
     if user == None:
+        logger()
         load_DB(os.getcwd() + '/BudgetBuddy.db')
         user = None
         print('--------------------------\n|WELCOME TO BUDGET BUDDY!|\n--------------------------') 

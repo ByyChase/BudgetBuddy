@@ -1,7 +1,7 @@
 from Models.LoadDatabase import cursor
 from Models.LoadDatabase import commit
 from Models.LoadDatabase import dict_factory
-
+import logging
 class User:
 
     """

@@ -1,4 +1,4 @@
-import bcrypt, getpass
+import bcrypt, getpass, logging
 from Models.User import User
 
 

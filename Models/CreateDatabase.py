@@ -1,3 +1,4 @@
+import logging
 def create_DB(c):
 
     try:
@@ -53,10 +54,10 @@ def create_DB(c):
                         foreign key(User_ID) references User(User_ID)
                         )""")
 
-        print("Creating Database")
+        logging.info("Database created sucessfully")
 
     except Exception as error:
-        print(error)
+        logging.exception("Error Creating Database")
     
     return
 

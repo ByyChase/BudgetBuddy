@@ -1,7 +1,7 @@
 from Models.LoadDatabase import cursor
 from Models.LoadDatabase import commit
 from Models.LoadDatabase import dict_factory
-import datetime
+import datetime, logging
 from money import Money
 
 
@@ -114,7 +114,7 @@ class IncomeStatement:
 
             temp_income_statement_object = IncomeStatement(Date = temp_SQL_data[0], Amount = temp_SQL_data[1], UnBudgeted = temp_SQL_data[2], Description = temp_SQL_data[3], IncomeStatement_ID = temp_SQL_data[4], User_ID = temp_SQL_data[5])
             return temp_income_statement_object
-            
+
         #If nothing was found a 0 will be returned
         else:
             return 0
