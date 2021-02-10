@@ -5,6 +5,7 @@ from Models.LoadDatabase import close
 from Models.LoadDatabase import commit
 from LogModule import logger
 from Models.IncomeStatement import IncomeStatement
+from Models.BankAccount import BankAccount
 
 #Global Variables 
 
@@ -47,7 +48,7 @@ def RunApp(user):
 
             cont1 = True
 
-            while cont1 == True:
+            while cont1:
             
                 IncomeStatement_Choice = int(input("\n\n\n------------------------------------------\n|Please select what you would like to do:|\n------------------------------------------ \n\n1)Create a New Income Statement \n2)Edit an Existing Income Statement \n3)View Your Existing Income Statements \n4)Return to the Main Menu\n\nYour Input:"))
 
@@ -62,9 +63,8 @@ def RunApp(user):
                 elif IncomeStatement_Choice == 3:
                     IncomeStatement.view_user_statements(user)
                     
-                    pass
 
-                else:
+                elif IncomeStatement_Choice == 4:
                     RunApp(user)
 
         elif Menu_Choice == 2:
@@ -76,8 +76,31 @@ def RunApp(user):
             pass
 
         elif Menu_Choice == 4:
+
+            cont4 = True
             
-            pass
+            while cont4:
+            
+                bank_account_choice = input("\n\n\n------------------------------------------\n|Please select what you would like to do:|\n------------------------------------------ \n\n1)Create a New Bank Account \n2)Edit an Existing Bank Account \n3)View Your Existing Bank Accounts \n4)Return to the Main Menu\n\nYour Input:")
+
+                while bank_account_choice == "" or bank_account_choice != '1' and bank_account_choice != '2' and bank_account_choice != '3' and bank_account_choice != '4':
+                    bank_account_choice = input("\n\n\n--------------------------------------------\n|Please only select one of these statements:|\n--------------------------------------------\n\n1)Create a New Bank Account \n2)Edit an Existing Bank Account \n3)View Your Existing Bank Accounts \n4)Return to the Main Menu\n\nYour Input:")
+        
+
+                if bank_account_choice == '1':
+                    
+                    BankAccount.create_bank_account(user)
+
+                elif bank_account_choice == '2':
+                    pass
+
+                elif bank_account_choice == '3':
+                    pass
+
+                elif bank_account_choice == '4':
+
+                    RunApp(user)
+            
         
         elif Menu_Choice == 5:
             pass

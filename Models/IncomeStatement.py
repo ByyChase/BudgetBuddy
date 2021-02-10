@@ -1,6 +1,5 @@
 from Models.LoadDatabase import cursor
 from Models.LoadDatabase import commit
-from Models.LoadDatabase import dict_factory
 import datetime, logging
 from money import Money
 
@@ -238,10 +237,9 @@ class IncomeStatement:
         
         else:
 
-            
             try:
 
-            user_statements = IncomeStatement.get_users_statements(user)
+                user_statements = IncomeStatement.get_users_statements(user)
 
             except Exception as e:
 
@@ -254,6 +252,7 @@ class IncomeStatement:
             user_still_editing_selected_income_statement = True
 
             while user_still_editing_selected_income_statement:
+
                 #Printing the Income Statement the user is editng 
                 print("\n-----------------------\n|Income Statement Info|\n-----------------------")
                 print("\n\nDate: " + str(user_statements[user_selected_statement].Date))
@@ -433,7 +432,6 @@ class IncomeStatement:
         ----------
         self : IncomeStatement Object 
             A fully created/populated income statement object
-
         """ 
 
         statement = "INSERT INTO INCOMESTATEMENT (Date, Amount, UnBudgeted, Description, User_ID) VALUES (?, ?, ?, ?, ?)"
