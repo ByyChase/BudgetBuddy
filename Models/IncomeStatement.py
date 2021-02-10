@@ -7,7 +7,7 @@ from money import Money
 
 class IncomeStatement:
     """
-    A class used to represent an Animal
+    A class used to represent an IncomeStatement
 
     ...
 
