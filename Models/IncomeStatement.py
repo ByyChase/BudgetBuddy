@@ -511,7 +511,7 @@ class IncomeStatement:
 
                 except Exception as e:
 
-                    print(e)
+                    pass
 
         #Asking the user to input a description for their paycheck. This is one of the key ways that users will use determine what the paycheck is 
         print("\n----------------------------------------------------------\n")       

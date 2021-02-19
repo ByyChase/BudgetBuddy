@@ -47,7 +47,7 @@ def create_DB(c):
 
         c.execute("""CREATE TABLE BANKACCOUNT (
                         Name text,
-                        Ammount real,
+                        Amount real,
                         Description text,
                         Account_ID integer PRIMARY KEY,
                         User_ID integer,
