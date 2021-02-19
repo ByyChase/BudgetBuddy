@@ -177,7 +177,6 @@ class IncomeStatement:
         user: User Object
             This is a user object mainly used to get the User_ID from the user'
 
-        show_ouput : literally anything toq
             
         ...
         
@@ -193,6 +192,11 @@ class IncomeStatement:
         except Exception as e:
 
             logging.exception("Unable to get list of User IncomeStatements")
+            return
+
+        if user_statements == 0:
+            print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+            print("\n\nLooks like you dont have any Income Statements yet")
             return
         
         print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")

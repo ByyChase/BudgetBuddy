@@ -206,6 +206,104 @@ class BankAccount:
         #Showing the user the Bank Account they created
         print("\n\nHere is your Bank Account:\n")
         print("Name: " + name + "\nDescription: " + description + "\nAmount: $" + amount)
+
+
+    def get_users_bank_accounts(user):
+        """
+        This method is used to retreive all of the BankAccount IDs from the database for a particular user 
+        and then returns a list of BankAccount objects that belong to the user
+
+        ...
+
+        Parameters
+        ----------
+        user: User Object
+            This is a user object mainly used to get the User_ID from the user
+
+        ...
+
+        Returns
+        -------
+        bank_account : List of BankAccount Objects 
+            this is returned if the database call was successful in finding any BankAccounts for the User_ID provided
+
+        --or--
+
+        0 : int
+            This is returned if no data was able to be found or if something went wrong
+        """ 
+
+        #SQL statement for the database call 
+        statement = "SELECT * FROM BANKACCOUNT WHERE User_ID = ?"
+        #Call to the database 
+        rows = cursor().execute(statement, (user.User_ID,)).fetchall()
+        #Checking to see if data was returned from the database. If it is the data will be parsed and returned in a list 
+        #of BankAccount objects. If nothing is found 0 is returned
+        if rows:
+
+            bank_account = []
+
+            for x in rows:
+
+                temp_bank_account = BankAccount(Name = x[0], Amount = x[1], Description = x[2], Account_ID = x[3], User_ID = x[4])
+                bank_account.append(temp_bank_account)
+            
+            return bank_account
+
+        else:
+            return 0
+
+
+    def view_user_bank_accounts(user):
+        """
+        This method is used to output user BankAccounts to the command line
+
+        ...
+
+        Parameters
+        ----------
+        user: User Object
+            This is a user object mainly used to get the User_ID from the user'
+
+            
+        ...
+        
+        Returns
+        -------
+        user_bank_acounts : List of Bank Accounts
+            This return is only used for the edit_user_bank_accounts function. 
+        """
+        try:
+
+            user_bank_accounts = BankAccount.get_users_bank_accounts(user)
+
+        except Exception as e:
+
+            logging.exception("Unable to get list of User BankAccounts")
+            return
+
+        if user_bank_accounts == 0:
+            print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+            print("Looks like you dont have any Bank Accounts yet\n")
+            return
+        
+        print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+        print("Here are your accounts: \n")
+        count = 1
+
+        for x in user_bank_accounts:
+            print("\nAccount #" + str(count) + ":")
+            print("Name: " + str(x.Name))
+            print("Description: " + str(x.Description))
+            print("Amount: $" + str(x.Amount))
+            count += 1
+
+        input("\nPlease hit enter when you would like to continue....")
+        return user_bank_accounts
+
+
+
+
         
                 
                 

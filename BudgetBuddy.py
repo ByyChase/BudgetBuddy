@@ -88,14 +88,15 @@ def RunApp(user):
         
 
                 if bank_account_choice == '1':
-                    
+                
                     BankAccount.create(user)
 
                 elif bank_account_choice == '2':
                     pass
 
                 elif bank_account_choice == '3':
-                    pass
+
+                    BankAccount.view_user_bank_accounts(user)
 
                 elif bank_account_choice == '4':
 
