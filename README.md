@@ -47,5 +47,10 @@ BudgetBuddy is a Python program that allows for easy budgeting of funds that you
 * Viewing of Expenses
 * Editing of Expenses
 * Deleting of Anything 
-* A nice GUI (planned for 2.0 release)
+
+
+ # BudgetBuddy 2.0 #
+* This will be an new release with the use of a full blown GUI! 
+* I am going back and forth between doing a janky way with Electron or something Python Native
+* This release should also implement analytics as well to see where you are spending your money
 
