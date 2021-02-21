@@ -208,6 +208,17 @@ class BankAccount:
         print("Name: " + name + "\nDescription: " + description + "\nAmount: $" + amount)
 
 
+        user_edit_bank_account = input("\nIs this information correct?\n\nYour Input (Yes/No): ").lower()
+
+        while user_edit_bank_account !=  "yes" and user_edit_bank_account != "no":
+
+            user_edit_bank_account = input("\nPlease only input accepted inputs\n\nYour Input (Yes/No): ").lower()
+
+        if user_edit_bank_account == "no":
+            BankAccount.edit_user_bank_accounts(user, 1)
+
+
+
     def get_users_bank_accounts(user):
         """
         This method is used to retreive all of the BankAccount IDs from the database for a particular user 
@@ -300,6 +311,178 @@ class BankAccount:
 
         input("\nPlease hit enter when you would like to continue....")
         return user_bank_accounts
+
+
+    def edit_user_bank_accounts(user, edit_single_statement = None):
+        """
+        This method is used to edit user Back Accounts. The user is not allowed to directly edit the amount inside of the Bank account. 
+        They have to edit it through adding an income statement. The Name and Description can be changed. If a bank account is deleted 
+        then anything in the database with referance back to the bank account will be deleted. 
+
+        ...
+
+        Parameters
+        ----------
+        user : User Object 
+            A fully created/populated user object. This is gotten and passed from the Auth.Login file.
+            This is mainly needed for the User_ID to tie the income statement to the user
+
+        edit_single_statement : int
+            This parmeter is used only if the last entry to the database needs changed. This will not give the user the option to edit all their 
+            accounts. The standard value is None, if it is set to anything else it will only allow editing on the last Bank Account Entry
+        """ 
+
+        def edit_bank_account_instance(user_selected_bank_account, edit_amount = None):
+ 
+            print("\n\n---------------------------\n|Lets Edit a Bank Account!|\n---------------------------")
+            #Have the user input the name they want to put for their bank account
+            
+            user_keep_editing_account = True
+
+            while user_keep_editing_account:
+
+
+                if edit_amount != None:
+
+                    print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+                    print("Here is the account: \n")
+                    print("1)Name: " + str(user_selected_bank_account.Name))
+                    print("2)Description: " + str(user_selected_bank_account.Description))
+                    print("3)Amount: $" + str(user_selected_bank_account.Amount))
+                    print("4)Done Editing")
+
+
+                    user_edit_selected = input("\nPlease select the number associated with the option you want to edit above! \n\nYour Input: ")
+
+                    while user_edit_selected != "1" and user_edit_selected != "2" and user_edit_selected != "3" and user_edit_selected != "4":
+
+                        user_edit_selected = input("Please only select 1, 2, or 3! \n\nYour Input: ")
+
+                    if user_edit_selected == "4":
+                        user_keep_editing_account = False
+
+                else:
+                    
+                    print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+                    print("Here is the account: \n")
+                    print("1)Name: " + str(user_selected_bank_account.Name))
+                    print("2)Description: " + str(user_selected_bank_account.Description))
+                    print("3)Done Editing")
+
+
+                    user_edit_selected = input("Please select the number associated with the option you want to edit above! \n\nYour Input: ")
+
+                    while user_edit_selected != "1" and user_edit_selected != "2" and user_edit_selected != "3":
+
+                        user_edit_selected = input("Please only select 1 or 2! \n\nYour Input: ")
+
+                    if user_edit_selected == "3":
+                        user_keep_editing_account = False
+
+
+                if user_edit_selected == "1":
+
+                    name = input("\n\nPlease enter the name you would like to call this account!\n\n*DISCLAIMER*: This will be the main way you identify this account, please chose the name wisly!\n\nYour Input: ")
+                    #Input Validation
+                    while name == "" or name.strip() == "":
+                        
+                        print("\n----------------------------------------------------------\n")
+                        name = input("\n\nA blank input is not allowed for this value, Please enter an account name!\n\n*DISCLAIMER*: This will be the main way you identify this account, please chose the name wisly!\n\nYour Input: ")
+
+                    user_selected_bank_account.Name = name
+
+                elif user_edit_selected == "2":
+
+                    print("\n----------------------------------------------------------\n")
+                    #Getting the user to input the description for the bank account
+                    description = input("\n\nPlease enter a description for this account!\n\n*DISCLAIMER*: This will be one of the main ways you identify this account, please describe it well!\n\nYour Input: ")
+                    #Input Validation
+                    while description == "" or description.strip() == "":
+                        
+                        print("\n----------------------------------------------------------\n")
+                        description = input("\n\nA blank input is not accepted, please input a description for the account!\n\n*DISCLAIMER*: This will be one of the main ways you identify this account, please describe it well!\n\nYour Input: ")
+
+                    user_selected_bank_account.Description = description
+
+
+                elif user_edit_selected == "3":
+
+                    print("\n----------------------------------------------------------\n")
+                    #Getting the user input for the amount
+                    amount = input("\n\nPlease enter the amount that is currently in your Bank Account!\n\nYour Input: $")
+                    GoodMoney = False
+                    
+                    #Input Validation
+                    while amount == "" or amount.strip() == "":
+                        
+                        print("\n----------------------------------------------------------\n")
+                        amount = input("\n\n**A blank input is not allowed for this value***\nPlease enter the amount that is currently in your Bank Account!\n\nYour Input: $")
+                        
+                    #This will try to format the input into the ##.## format. If it can not format it into a two decimal format then it will fail
+                    #and will run the accept statement below
+                    try: 
+                        amount = "{:.2f}".format(float(amount))
+                        GoodMoney = True
+                        
+                    except Exception as e:
+                        
+                        while GoodMoney == False:
+                            
+                            print("\n----------------------------------------------------------\n")  
+                            amount = input("\n\nSorry, that input did not work, try again!\n\nYour Input: $")
+                            
+                            
+                            while amount == "" or amount.strip() == "":
+                                
+                                print("\n----------------------------------------------------------\n")
+                                amount = input("\n\n**A blank input is not allowed for this value**\nPlease enter the amount that is currently in your Bank Account!\n\nYour Input: $")
+                            
+                            try: 
+                                amount = "{:.2f}".format(float(amount))
+                                GoodMoney = True
+                                
+                            except Exception as e:
+                                
+                                pass
+
+                    user_selected_bank_account.Amount = amount
+
+            return user_selected_bank_account
+        
+
+        def update_user_bank_account(user_selected_bank_account):
+
+            statement = "UPDATE BANKACCOUNT SET Name = ?, Amount = ?, Description = ?, Account_ID = ?, User_ID = ? WHERE  Account_ID = ?"
+            cursor().execute(statement, (user_selected_bank_account.Name, user_selected_bank_account.Amount, user_selected_bank_account.Description, user_selected_bank_account.Account_ID,user_selected_bank_account.User_ID, user_selected_bank_account.Account_ID,))
+            commit()
+
+
+
+        if edit_single_statement == None:
+            pass
+
+        else:
+            try:
+
+                user_bank_accounts = BankAccount.get_users_bank_accounts(user)
+                logging.info("User Bank Accounts retreived successfully")
+
+            except Exception as e:
+
+                logging.exception("Unable to get list of User Bank Accounts")
+                print("\n\nAn error has occured")
+                return
+
+        user_selected_bank_account = edit_bank_account_instance(user_bank_accounts[len(user_bank_accounts) -1], 1)
+        update_user_bank_account(user_selected_bank_account)
+            
+
+        
+
+            
+        
+
+
 
 
 
