@@ -72,18 +72,29 @@ def login():
 
             logging.exception("Failed Database call")
 
-        hashedPassword = user.Password
-        logging.info("User login info successful retrieved")
+        if user:
+
+            hashedPassword = user.Password
+            logging.info("User login info successful retrieved")
+
+        else:
+            logging.error("User does not exist")
+            print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
+            login()
 
     except Exception as e:
         logging.exception("Unable to retreive user login info during login")
+        print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
+        login()
+
+  
     
     if bcrypt.checkpw(Password.encode('utf-8'), hashedPassword):
         return user
 
     else:
-       print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
-       login()
+        print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
+        login()
 
 
 def create_new_user():
