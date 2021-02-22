@@ -265,7 +265,7 @@ class BankAccount:
             return 0
 
 
-    def view_user_bank_accounts(user):
+    def view_user_bank_accounts(user, user_bank_accounts = None, ):
         """
         This method is used to output user BankAccounts to the command line
 
@@ -275,6 +275,10 @@ class BankAccount:
         ----------
         user: User Object
             This is a user object mainly used to get the User_ID from the user'
+        user_bank_accounts: A list of Bank Acount Objects
+            This is used to chose if you want to provide the user Bank Accounts or if you need 
+            the database to be called. If it is not none then you provided the accounts 
+            requiring less Database calls
 
             
         ...
@@ -284,33 +288,49 @@ class BankAccount:
         user_bank_acounts : List of Bank Accounts
             This return is only used for the edit_user_bank_accounts function. 
         """
-        try:
 
-            user_bank_accounts = BankAccount.get_users_bank_accounts(user)
+        if user_bank_accounts == None:
+            try:
 
-        except Exception as e:
+                user_bank_accounts = BankAccount.get_users_bank_accounts(user)
 
-            logging.exception("Unable to get list of User BankAccounts")
-            return
+            except Exception as e:
 
-        if user_bank_accounts == 0:
+                logging.exception("Unable to get list of User BankAccounts")
+                return
+
+            if user_bank_accounts == 0:
+                print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+                print("Looks like you dont have any Bank Accounts yet\n")
+                return
+            
             print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
-            print("Looks like you dont have any Bank Accounts yet\n")
-            return
-        
-        print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
-        print("Here are your accounts: \n")
-        count = 1
+            print("Here are your accounts: \n")
+            count = 1
 
-        for x in user_bank_accounts:
-            print("\nAccount #" + str(count) + ":")
-            print("Name: " + str(x.Name))
-            print("Description: " + str(x.Description))
-            print("Amount: $" + str(x.Amount))
-            count += 1
+            for x in user_bank_accounts:
+                print("\nAccount #" + str(count) + ":")
+                print("Name: " + str(x.Name))
+                print("Description: " + str(x.Description))
+                print("Amount: $" + str(x.Amount))
+                count += 1
 
-        input("\nPlease hit enter when you would like to continue....")
-        return user_bank_accounts
+            input("\nPlease hit enter when you would like to continue....")
+            return user_bank_accounts
+
+        else:
+            
+            print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+            print("Here are your accounts: \n")
+            count = 1
+
+            for x in user_bank_accounts:
+                print("\nAccount #" + str(count) + ":")
+                print("Name: " + str(x.Name))
+                print("Description: " + str(x.Description))
+                print("Amount: $" + str(x.Amount))
+                count += 1
+
 
 
     def edit_user_bank_accounts(user, edit_single_statement = None):
@@ -356,7 +376,7 @@ class BankAccount:
 
                     while user_edit_selected != "1" and user_edit_selected != "2" and user_edit_selected != "3" and user_edit_selected != "4":
 
-                        user_edit_selected = input("Please only select 1, 2, or 3! \n\nYour Input: ")
+                        user_edit_selected = input("\n\nPlease only select 1, 2, or 3! \n\nYour Input: ")
 
                     if user_edit_selected == "4":
                         user_keep_editing_account = False
@@ -370,14 +390,15 @@ class BankAccount:
                     print("3)Done Editing")
 
 
-                    user_edit_selected = input("Please select the number associated with the option you want to edit above! \n\nYour Input: ")
+                    user_edit_selected = input("\nPlease select the number associated with the option you want to edit above! \n\nYour Input: ")
 
                     while user_edit_selected != "1" and user_edit_selected != "2" and user_edit_selected != "3":
 
-                        user_edit_selected = input("Please only select 1 or 2! \n\nYour Input: ")
+                        user_edit_selected = input("\n\nPlease only select 1 or 2! \n\nYour Input: ")
 
                     if user_edit_selected == "3":
                         user_keep_editing_account = False
+                        user_edit_selected = None
 
 
                 if user_edit_selected == "1":
@@ -457,10 +478,67 @@ class BankAccount:
             commit()
 
 
-
+        #If the the edit_single_statement variable is not set then it will allow you to choose the account to edit
+        #This is used in all instances that aren't being called from the create() methods. This will not allow for 
+        # the editing of the amount in the accounts 
         if edit_single_statement == None:
-            pass
 
+            user_bank_accounts = BankAccount.get_users_bank_accounts(user)
+
+
+            while True:
+                BankAccount.view_user_bank_accounts(user, user_bank_accounts)
+
+                bad_input = True
+                print("\n----------------------------------------------------------\n")
+
+                while bad_input:
+
+                    
+                    user_account_choice = input("\n\nPlease enter an account number from above to edit, or enter 0 to quit\n\nYour Input: ")
+
+                    while user_account_choice.strip() == "":
+                        user_account_choice = input("\n\nPlease enter an account number from above to edit, or enter 0 to quit\n\nYour Input: ")
+                    
+                    user_account_choice = int(user_account_choice)
+
+                    
+
+                    while user_account_choice > len(user_bank_accounts) and user_account_choice != 0:
+                        user_account_choice = input("\n\nPlease only enter one of the numbers listed above, or enter 0 to quit\n\nYour Input: ")
+
+                        while user_account_choice.strip() == "":
+
+                            user_account_choice = input("\n\nPlease enter an account number from above to edit, or enter 0 to quit\n\nYour Input: ")
+                        
+                        user_account_choice = int(user_account_choice)
+
+                    user_account_choice = int(user_account_choice)
+                    bad_input = False
+
+                if user_account_choice == 0:
+                    return
+
+                
+
+                user_selected_bank_account = edit_bank_account_instance(user_bank_accounts[user_account_choice- 1])
+                #updating the edited account
+                try:
+                    update_user_bank_account(user_selected_bank_account)
+                    logging.info("Datbase successfuly updated (Bank Account)")
+
+                except Exception as e:
+                    logging.exception("Problem updating the database with the Bank Account")
+                    print("\n----------------------------------------------------------\n")
+                    print("There was an error updating the database. We will return you back to the menu")
+                    return
+
+
+
+        
+        #This will be run if the edit is coming from the create() method allowing for the last
+        # addition to the accounts to be created. It will also allow the edit of the amount in 
+        # the account 
         else:
             try:
 
@@ -473,8 +551,18 @@ class BankAccount:
                 print("\n\nAn error has occured")
                 return
 
+        #Sending the last Bank Account created 
         user_selected_bank_account = edit_bank_account_instance(user_bank_accounts[len(user_bank_accounts) -1], 1)
-        update_user_bank_account(user_selected_bank_account)
+        #updating the edited account
+        try:
+            update_user_bank_account(user_selected_bank_account)
+            logging.info("Datbase successfuly updated (Bank Account)")
+
+        except Exception as e:
+            logging.exception("Problem updating the database with the Bank Account")
+            print("\n----------------------------------------------------------\n")
+            print("There was an error updating the database. We will return you back to the menu")
+            return
             
 
         

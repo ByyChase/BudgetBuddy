@@ -92,7 +92,7 @@ def RunApp(user):
                     BankAccount.create(user)
 
                 elif bank_account_choice == '2':
-                    pass
+                    BankAccount.edit_user_bank_accounts(user)
 
                 elif bank_account_choice == '3':
 
