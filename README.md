@@ -32,21 +32,25 @@ BudgetBuddy is a Python program that allows for easy budgeting of funds that you
 * Logging errors to external error log
 * Creation of Bank Accounts
 * Viewing Bank Accounts
-
- ## Next Feature Being Implemented ##
-
 * Editing of Bank Accounts
+
+ ## What is being Worked On ##
+
+* Clean up of existing code documentation
+* Ensuring logging is done in the correct places 
 
 ## In the Queue ##
 
+* Deleting of IncomeStatements and Budgets
 * Linking IncomeStatement to Bank Account 
 * Creation of Budget
 * Viewing of Budgets 
 * Editing of Budgets 
+* Deleting Budgets
 * Creation of Expenses
 * Viewing of Expenses
 * Editing of Expenses
-* Deleting of Anything 
+* Deleting of Expenses
 
 
  # BudgetBuddy 2.0 #
