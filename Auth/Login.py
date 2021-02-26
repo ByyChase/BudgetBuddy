@@ -3,6 +3,11 @@ from Models.User import User
 
 def login():
 
+    """
+    This function is used to log users in. They can chose to login to an existing account
+    they can create a new one. This
+    """
+
     try:
         type = input("\n\nEnter the type of user you are: \n\n1)Existing User \n2)New User\n\nYour Input: ")
 
@@ -17,6 +22,7 @@ def login():
 
                 user = User.fetch(Username = 'BYYCHASE')
                 return user 
+                logging.info("User Chase have been retreived")
 
             except Exception as e:
 
@@ -36,7 +42,8 @@ def login():
                 try:
 
                     user = User.fetch(Username = 'BYYCHASE')
-                    return user 
+                    return user
+                    logging.info("User Chase have been retreived")
 
                 except Exception as e:
 
@@ -58,37 +65,31 @@ def login():
         logging.exception("Unable to get user input for user type during intial login")
         login()
 
+   
+
+    Username = input("\n\nPlease input your username: ")
+    Username = Username.upper()
+    Password = getpass.getpass()
+
     try:
 
-        Username = input("\n\nPlease input your username: ")
-        Username = Username.upper()
-        Password = getpass.getpass()
-
-        try:
-
-            user = User.fetch(Username = Username)
-
-        except Exception as e:
-
-            logging.exception("Failed Database call")
-
-        if user:
-
-            hashedPassword = user.Password
-            logging.info("User login info successful retrieved")
-
-        else:
-            logging.error("User does not exist")
-            print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
-            login()
+        user = User.fetch(Username = Username)
+        logging.info("User was able to be fetched for login validation")
 
     except Exception as e:
-        logging.exception("Unable to retreive user login info during login")
+
+        logging.exception("Unable to fetch user for login")
+
+    if user:
+
+        hashedPassword = user.Password
+
+    else:
+
+        logging.error("Unable to retreive password from user object")
         print("\n\n-----------------------------------------\n|Looks like the login failed, try again!|\n-----------------------------------------")
         login()
 
-  
-    
     if bcrypt.checkpw(Password.encode('utf-8'), hashedPassword):
         return user
 
@@ -104,7 +105,18 @@ def create_new_user():
     Username = input("\n\nPlease input a Username: ")
     Username = Username.upper()
     temp_user = User()
-    temp_user = User.fetch(Username = Username)
+    try:
+
+        temp_user = User.fetch(Username = Username)
+    
+    except Exception as e:
+
+        logging.exception("Problem fetching the user from the database")
+        print("***ERROR WITH ACCOUNT CREATION PROBLEM***\n\nReturning to login page")
+        login()
+
+
+    
     
     while temp_user != "User Not Found":
 
@@ -114,6 +126,7 @@ def create_new_user():
             temp_user = User.fetch(Username = Username)
 
         except Exception as e:
+
             logging.exception("Unable to fetch user from database")
             login()
 
@@ -139,5 +152,5 @@ def create_new_user():
             logging.exception("Unable to commit new user to database")
             login()
 
-    print("\nTIME TO LOGIN\n")    
+    print("\n***TIME TO LOGIN***\n")    
     

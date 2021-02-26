@@ -146,7 +146,6 @@ class BankAccount:
             print("\n----------------------------------------------------------\n")
             name = input("\n\nA blank input is not allowed for this value, Please enter an account name!\n\n*DISCLAIMER*: This will be the main way you identify this account, please chose the name wisly!\n\nYour Input: ")
 
-
         print("\n----------------------------------------------------------\n")
         #Getting the user to input the description for the bank account
         description = input("\n\nPlease enter a description for this account!\n\n*DISCLAIMER*: This will be one of the main ways you identify this account, please describe it well!\n\nYour Input: ")
@@ -170,10 +169,13 @@ class BankAccount:
         #This will try to format the input into the ##.## format. If it can not format it into a two decimal format then it will fail
         #and will run the accept statement below
         try: 
+
             amount = "{:.2f}".format(float(amount))
             GoodMoney = True
             
         except Exception as e:
+
+            logging.exception("The format was not correct for the money input")
             
             while GoodMoney == False:
                 
@@ -192,7 +194,8 @@ class BankAccount:
                     
                 except Exception as e:
                     
-                    pass
+                    logging.exception("The format was not correct for the money input")
+
         #Trying to commit the new temp BankAccount to the database. If it fails it will return to the menu     
         try:
             
@@ -203,6 +206,7 @@ class BankAccount:
             logging.exception("Unable to commit new BankAccount to the database")
             print("\n\nLooks like something went wrong. Try again!")
             return
+
         #Showing the user the Bank Account they created
         print("\n\nHere is your Bank Account:\n")
         print("Name: " + name + "\nDescription: " + description + "\nAmount: $" + amount)
@@ -215,6 +219,7 @@ class BankAccount:
             user_edit_bank_account = input("\nPlease only input accepted inputs\n\nYour Input (Yes/No): ").lower()
 
         if user_edit_bank_account == "no":
+            
             BankAccount.edit_user_bank_accounts(user, 1)
 
 
@@ -290,6 +295,7 @@ class BankAccount:
         """
 
         if user_bank_accounts == None:
+
             try:
 
                 user_bank_accounts = BankAccount.get_users_bank_accounts(user)
@@ -300,6 +306,7 @@ class BankAccount:
                 return
 
             if user_bank_accounts == 0:
+
                 print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
                 print("Looks like you dont have any Bank Accounts yet\n")
                 return
@@ -319,6 +326,13 @@ class BankAccount:
             return user_bank_accounts
 
         else:
+
+            if user_bank_accounts == 0:
+                
+                print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+                print("Looks like there are no Bank Accounts to view\n\n")
+                return
+
             
             print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
             print("Here are your accounts: \n")
@@ -446,6 +460,8 @@ class BankAccount:
                         GoodMoney = True
                         
                     except Exception as e:
+
+                        logging.exception("The format was not correct for the money input")
                         
                         while GoodMoney == False:
                             
@@ -464,7 +480,7 @@ class BankAccount:
                                 
                             except Exception as e:
                                 
-                                pass
+                                logging.exception("The format was not correct for the money input")
 
                     user_selected_bank_account.Amount = amount
 
@@ -524,6 +540,7 @@ class BankAccount:
                 user_selected_bank_account = edit_bank_account_instance(user_bank_accounts[user_account_choice- 1])
                 #updating the edited account
                 try:
+
                     update_user_bank_account(user_selected_bank_account)
                     logging.info("Datbase successfuly updated (Bank Account)")
 

@@ -550,6 +550,7 @@ class IncomeStatement:
             user_accepts_entered_statement_input = input("\n\nPlease only enter accepted values...\nDoes this statement look right to you? \n\n1) Yes \n2) No \n\nYour Input (Yes or No): ")
 
         if user_accepts_entered_statement_input == "no":
+
             IncomeStatement.edit_user_statements(user, 1)
 
 
@@ -586,12 +587,15 @@ class IncomeStatement:
             date = date[1] + "/" + date[2] + "/" + date[0]
         
         except:
+
             pass
 
         if date:
+
             return date
 
         else:
+            
             return 0
 
 
