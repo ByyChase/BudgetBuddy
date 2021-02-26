@@ -36,16 +36,14 @@ BudgetBuddy is a Python program that allows for easy budgeting of funds that you
 
  ## What is being Worked On ##
 
-* Clean up of existing code documentation
-* Ensuring logging is done in the correct places 
+* Creation of Budget
+* Viewing of Budgets 
+* Editing of Budgets 
 
 ## In the Queue ##
 
 * Deleting of IncomeStatements and Budgets
 * Linking IncomeStatement to Bank Account 
-* Creation of Budget
-* Viewing of Budgets 
-* Editing of Budgets 
 * Deleting Budgets
 * Creation of Expenses
 * Viewing of Expenses
@@ -56,5 +54,4 @@ BudgetBuddy is a Python program that allows for easy budgeting of funds that you
  # BudgetBuddy 2.0 #
 * This will be an new release with the use of a full blown GUI! 
 * I am going back and forth between doing a janky way with Electron or something Python Native
-* This release should also implement analytics as well to see where you are spending your money
 
