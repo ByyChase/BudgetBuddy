@@ -6,6 +6,7 @@ from Models.LoadDatabase import commit
 from LogModule import logger
 from Models.IncomeStatement import IncomeStatement
 from Models.BankAccount import BankAccount
+from Models.Budget import Budget
 
 #Global Variables 
 
@@ -77,7 +78,32 @@ def RunApp(user):
 
         elif Menu_Choice == 3:
             
-            pass
+                       
+            cont3 = True 
+
+            while cont3:
+
+                budget_choice = input("\n\n\n------------------------------------------\n|Please select what you would like to do:|\n------------------------------------------ \n\n1)Create a New Budget \n2)Edit an Existing Budget \n3)View Your Existing Budgets \n4)Return to the Main Menu\n\nYour Input:")
+
+                while budget_choice == "" or budget_choice != '1' and budget_choice != '2' and budget_choice != '3' and budget_choice != '4':
+
+                    budget_choice = input("\n\n\n--------------------------------------------\n|Please only select one of these statements:|\n--------------------------------------------\n\n1)Create a New Budget \n2)Edit an Existing Budget \n3)View Your Existing Budgets \n4)Return to the Main Menu\n\nYour Input:")
+        
+                if budget_choice == '1':
+                
+                    pass
+
+                elif budget_choice == '2':
+                    
+                    pass
+
+                elif budget_choice == '3':
+
+                    Budget.view_user_budgets(user)
+
+                elif budget_choice == '4':
+
+                    RunApp(user)
 
         elif Menu_Choice == 4:
 
@@ -111,6 +137,7 @@ def RunApp(user):
         
         elif Menu_Choice == 5:
             pass
+
         
         elif Menu_Choice == 6:
             cont = False

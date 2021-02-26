@@ -1,5 +1,6 @@
 from Models.LoadDatabase import cursor
 from Models.LoadDatabase import commit
+from Modles.IncomeStatement import get_users_statements
 import datetime, logging
 from money import Money
 
@@ -122,7 +123,7 @@ class Budget:
             return 0
 
 
-    def get_users_budgets(user):
+    def get_users_budgets(user, income_statement_id = None):
         """
         This method is used to retreive all of the Budgets from the database for a particular user 
         and then returns a list of Budget objects that belong to the user
@@ -145,24 +146,72 @@ class Budget:
 
         0 : int
             This is returned if no data was able to be found or if something went wrong
-        """ 
+        """     
 
-        #SQL statement for the database call 
-        statement = "SELECT * FROM BUDGET WHERE User_ID = ?"
-        #Call to the database 
-        rows = cursor().execute(statement, (user.User_ID,)).fetchall()
-        #Checking to see if data was returned from the database. If it is the data will be parsed and returned in a list 
-        #of Budget objects. If nothing is found 0 is returned
-        if rows:
+        if income_statement_id == None:
 
-            budget_objects = []
+            #SQL statement for the database call 
+            statement = "SELECT * FROM BUDGET WHERE User_ID = ?"
+            #Call to the database 
+            rows = cursor().execute(statement, (user.User_ID,)).fetchall()
+            #Checking to see if data was returned from the database. If it is the data will be parsed and returned in a list 
+            #of Budget objects. If nothing is found 0 is returned
+            if rows:
 
-            for x in rows:
+                budget_objects = []
 
-                temp_budget = Budget(Name = x[0], Amount = x[1], UnSpent = x[2], Description = x[3], IncomeStatement_ID = x[4], Budget_ID = x[5], User_ID = x[6])
-                budget_objects.append(temp_budget)
-            
-            return budget_objects
+                for x in rows:
 
-        else:
-            return 0
+                    temp_budget = Budget(Name = x[0], Amount = x[1], UnSpent = x[2], Description = x[3], IncomeStatement_ID = x[4], Budget_ID = x[5], User_ID = x[6])
+                    budget_objects.append(temp_budget)
+                
+                return budget_objects
+
+            else:
+                return 0
+
+        elif income_statement_id:
+
+            #SQL statement for the database call 
+            statement = "SELECT * FROM BUDGET WHERE IncomeStatement_ID = ?"
+            #Call to the database 
+            rows = cursor().execute(statement, (income_statement_id,)).fetchall()
+            #Checking to see if data was returned from the database. If it is the data will be parsed and returned in a list 
+            #of Budget objects. If nothing is found 0 is returned
+            if rows:
+
+                budget_objects = []
+
+                for x in rows:
+
+                    temp_budget = Budget(Name = x[0], Amount = x[1], UnSpent = x[2], Description = x[3], IncomeStatement_ID = x[4], Budget_ID = x[5], User_ID = x[6])
+                    budget_objects.append(temp_budget)
+                
+                return budget_objects
+
+            else:
+                return 0
+
+
+
+    def view_user_budgets(user, list_all_budgets = None):
+
+        print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+        user_view_budgets_choice = input("\nHow would you like to view your budgets? \n\n1)All Budgets \n2)Budgets for a Specific Income Statement \n\nYour Input: ")
+        user_view_budgets_choice = user_view_budgets_choice.strip()
+
+        while user_view_budgets_choice == '' or user_view_budgets_choice != "1" and user_view_budgets_choice != "2":
+
+            user_view_budgets_choice = input("\n\n**INVALID INPUT**\n\nHow would you like to view your budgets? \n\n1)All Budgets \n2)Budgets for a Specific Income Statement \n\nYour Input: ")
+
+
+        if user_view_budgets_choice == '1':
+            pass
+
+        elif user_view_budgets_choice == '2':
+
+            user_income_statements = get_users_statements(user)
+
+
+
+
