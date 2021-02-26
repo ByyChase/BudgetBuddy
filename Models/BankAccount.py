@@ -102,7 +102,7 @@ class BankAccount:
         #If something was able to be found it will return an IncomeStatement object 
         if temp_SQL_data:
 
-            temp_bank_account_object = BankAccount()
+            temp_bank_account_object = temp_bank_account = BankAccount(Name = temp_SQL_data[0], Amount = temp_SQL_data[1], Description = temp_SQL_data[2], Account_ID = temp_SQL_data[3], User_ID = temp_SQL_data[4])
             return temp_bank_account_object
 
         #If nothing was found a 0 will be returned
