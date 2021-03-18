@@ -1,6 +1,6 @@
 from Models.LoadDatabase import cursor
 from Models.LoadDatabase import commit
-from Modles.IncomeStatement import get_users_statements
+from Models.IncomeStatement import IncomeStatement
 import datetime, logging
 from money import Money
 
@@ -204,13 +204,57 @@ class Budget:
 
             user_view_budgets_choice = input("\n\n**INVALID INPUT**\n\nHow would you like to view your budgets? \n\n1)All Budgets \n2)Budgets for a Specific Income Statement \n\nYour Input: ")
 
+        user_budgets = Budget.get_users_budgets(user)
 
         if user_view_budgets_choice == '1':
             pass
 
         elif user_view_budgets_choice == '2':
 
-            user_income_statements = get_users_statements(user)
+            print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+            
+
+            income_statement_number = 1
+
+            user_income_statements = IncomeStatement.get_users_statements(user)
+
+            if user_income_statements == 0:
+
+                print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+                print("Looks like you dont have any Income Statements yet!\n\n")
+                return
+
+            print("\nHere are your Income Statements: \n\n")
+            print("\n--------------------------------------------------------------------------\n")
+
+            for x in user_income_statements:
+
+                print("Budgets for Income Statement #" + str(income_statement_number))
+                print("Income Statement Description: " + x.Description)
+                print("Income Statement Date: " + x.Date)
+                print("Income Statement Amount: " + str(x.Amount))
+                print("\n--------------------------------------------------------------------------\n")
+                
+                income_statement_number += 1
+
+
+            user_choice_view_budgets = input("\nPlease select which Income Statement's budgets you would like to look at!\n\nYour Input: ")
+
+            user_choice_view_budgets = user_choice_view_budgets.strip()
+
+            try:
+
+                user_choice_view_budgets = int(user_choice_view_budgets)
+            
+
+
+            while 
+
+
+                
+
+
+
 
 
 
