@@ -205,9 +205,34 @@ class Budget:
             user_view_budgets_choice = input("\n\n**INVALID INPUT**\n\nHow would you like to view your budgets? \n\n1)All Budgets \n2)Budgets for a Specific Income Statement \n\nYour Input: ")
 
         user_budgets = Budget.get_users_budgets(user)
+<<<<<<< HEAD
+=======
+
+        if user_budgets == 0:
+
+            print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+            print("It looks like you don't have any budgets yet\n")
+            return
+
+>>>>>>> 5f8627a1863ec9ed0584248332c01ddbf1053f24
 
         if user_view_budgets_choice == '1':
-            pass
+
+            print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
+            print('Here are your Budgets: ')
+
+            count = 1
+
+            for x in user_budgets:
+                print('Budget #' + str(count))
+                print('Name: ' + x.Name)
+                print('Description: ' + x.Description)
+                print('Amount: $' + x.Amount)
+                print('UnSpent: $' + x.UnSpent)
+
+                count += 1
+                print('----------------------------------------------------------------------------------------------\n')    
+            
 
         elif user_view_budgets_choice == '2':
 
