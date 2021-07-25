@@ -60,7 +60,7 @@ class Budget:
 
     db_fetch = "SELECT * FROM BUDGET WHERE "
 
-    def fetch(**KWARGS):
+    def fetch(self, **KWARGS):
         """
         This method is used to fetch Budget objects from the database. It will mainly 
         be used with the User_ID being what is searched on or the Budget_ID. It can accept 
@@ -123,7 +123,36 @@ class Budget:
             return 0
 
 
-    def get_users_budgets(user, income_statement_id = None):
+    def commit_budgets(self):
+        """
+        This method is used to input a new Budget into the database.
+
+        ...
+
+        Parameters
+        ----------
+        self : Budget Object 
+            A fully created/populated Budget Object
+        """
+
+        statement = "INSERT INTO BUDGET (Name, Amount, UnSpent, Description, IncomeStatement_ID, Budget_ID, User_ID) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        cursor().execute(statement, (self.Name, self.Amount, self.UnSpent, self.Description, self.IncomeStatement_ID, self.Budget_ID, self.User_ID))
+        commit()
+
+    def create_users_budgets(self):
+        """
+        This method is used to walk a user through creating a new Budget
+        
+        ...
+
+        Parameters
+        ----------
+        self : Budget object
+            An empty budget object
+        """
+
+
+    def get_users_budgets(self, user, income_statement_id = None):
         """
         This method is used to retreive all of the Budgets from the database for a particular user 
         and then returns a list of Budget objects that belong to the user
@@ -194,7 +223,7 @@ class Budget:
 
 
 
-    def view_user_budgets(user, list_all_budgets = None):
+    def view_user_budgets(self, user, list_all_budgets = None):
 
         print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
         user_view_budgets_choice = input("\nHow would you like to view your budgets? \n\n1)All Budgets \n2)Budgets for a Specific Income Statement \n\nYour Input: ")
@@ -205,8 +234,6 @@ class Budget:
             user_view_budgets_choice = input("\n\n**INVALID INPUT**\n\nHow would you like to view your budgets? \n\n1)All Budgets \n2)Budgets for a Specific Income Statement \n\nYour Input: ")
 
         user_budgets = Budget.get_users_budgets(user)
-<<<<<<< HEAD
-=======
 
         if user_budgets == 0:
 
@@ -214,7 +241,6 @@ class Budget:
             print("It looks like you don't have any budgets yet\n")
             return
 
->>>>>>> 5f8627a1863ec9ed0584248332c01ddbf1053f24
 
         if user_view_budgets_choice == '1':
 
@@ -266,14 +292,7 @@ class Budget:
             user_choice_view_budgets = input("\nPlease select which Income Statement's budgets you would like to look at!\n\nYour Input: ")
 
             user_choice_view_budgets = user_choice_view_budgets.strip()
-
-            try:
-
-                user_choice_view_budgets = int(user_choice_view_budgets)
             
-
-
-            while 
 
 
                 
