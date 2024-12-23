@@ -18,7 +18,7 @@ BudgetBuddy is a Python program that allows for easy budgeting of funds that you
  
  You can install the requirements using the following command from the main directory:
  
- `pip install -r requirements.txt`
+ `pip3 install -r requirements.txt`
  <br></br>
  ## What Currently Works ##
 

@@ -109,6 +109,7 @@ class BankAccount:
         else:
             return 0
 
+
     def commit_bank_accout(self): 
         """
         This method is used to input a new BankAccount into the database.
@@ -124,6 +125,7 @@ class BankAccount:
         statement = "INSERT INTO BANKACCOUNT (Name, Amount, Description, User_ID) VALUES (?, ?, ?, ?)"
         cursor().execute(statement, (self.Name, self.Amount, self.Description, self.User_ID))
         commit()
+
 
     def create(user):
         """
@@ -221,7 +223,6 @@ class BankAccount:
         if user_edit_bank_account == "no":
             
             BankAccount.edit_user_bank_accounts(user, 1)
-
 
 
     def get_users_bank_accounts(user):
@@ -344,7 +345,6 @@ class BankAccount:
                 print("Description: " + str(x.Description))
                 print("Amount: $" + str(x.Amount))
                 count += 1
-
 
 
     def edit_user_bank_accounts(user, edit_single_statement = None):

@@ -9,7 +9,22 @@ def create_DB(c):
                         Description text,
                         IncomeStatement_ID integer PRIMARY KEY,
                         User_ID int,
+                        Expense_ID int,
                         foreign key(User_ID) references User(User_ID)
+                        )""")
+
+        c.execute("""CREATE TABLE TRANSACTION (
+                        Amount real,
+                        Transcation_Type int,
+                        Transaction_ID int PRIMARY KEY,
+                        User_ID int,
+                        IncomeStatement_ID int,
+                        Budget_ID int,
+                        Account_ID int,
+                        foreign key(User_ID) references User(User_ID),
+                        foreign key(IncomeStatement_ID) references INCOMESTATEMENT(IncomeStatement_ID),
+                        foreign key(Budget_ID) references BUDGET(Budget_ID),
+                        foreign key(Account_ID) references BANKACCOUNT(Account_ID),
                         )""")
 
         c.execute("""CREATE TABLE BUDGET (
@@ -20,8 +35,10 @@ def create_DB(c):
                         IncomeStatement_ID integer,
                         Budget_ID integer PRIMARY KEY,
                         User_ID int,
+                        Account_ID int,
                         foreign key(USER_ID) references User(User_ID),
                         foreign key(IncomeStatement_ID) references INCOMESTATEMENT(IncomeStatement_ID) 
+                        foreign key(Account_ID) references BANKACCOUNT(Account_ID) 
                         )""")
 
         c.execute("""CREATE TABLE EXPENSE (

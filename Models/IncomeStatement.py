@@ -460,7 +460,7 @@ class IncomeStatement:
 
         #Asking the user for their input for the date of their income
         print("\n----------------------------------------------------------\n")
-        Date = input("\nPlease input the date you received the income (Please use the MM/DD/YYYY format): ")
+        Date = input("\nPlease input the date you received the income (Please use the MM/DD/YYYY format): \n\nInput: ")
         GoodDate = False
         
         #Trying to turn the date the user put in into a date time object 

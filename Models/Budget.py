@@ -30,7 +30,7 @@ class Budget:
         Foreign Key to the owning User
     """
 
-    def __init__(self, Name=None, Amount=None, UnSpent=None, Description=None, Paycheck_ID=None, Budget_ID=None):
+    def __init__(self, Name=None, Amount=None, UnSpent=None, Description=None, Budget_ID=None, User_ID=None, IncomeStatement_ID=None):
         """
         Parameters
         ----------
@@ -139,7 +139,8 @@ class Budget:
         cursor().execute(statement, (self.Name, self.Amount, self.UnSpent, self.Description, self.IncomeStatement_ID, self.Budget_ID, self.User_ID))
         commit()
 
-    def create_users_budgets(self):
+
+    def create(self):
         """
         This method is used to walk a user through creating a new Budget
         
@@ -150,6 +151,30 @@ class Budget:
         self : Budget object
             An empty budget object
         """
+
+        print("\n\n-------------------------------\n|Lets Make a New Budget!|\n-------------------------------")
+        budget_name = input("\nPlease input the name of the budget. This will be how you identify the budget and see it in the program. Choose wisly!\n\nInput: ")
+        #Input Validation
+        while budget_name == "" or budget_name.strip() == "":
+
+            print("\n----------------------------------------------------------\n")
+            budget_name = input("\n\nA blank input is not allowed for this value, Please enter a budget name!\n\nThis will be how you identify the budget and see it in the program. Choose wisly!\n\nYour Input: ")
+
+        budget_description = input("\nPlease input the description of the budget. This will provide you extra information on what this budget is!\n\nInput: ") 
+        #Input Validation
+        while budget_description == "" or budget_description.strip() == "":
+            print("\n----------------------------------------------------------\n")
+            budget_name = input("\n\nA blank input is not allowed for this value, Please enter a budget description!\n\nThis will provide you extra information on what this budget is!\n\nYour Input: ")
+
+        budget_amount = input("\nPlease input the amount ($) of the budget. This is how much money you want to put into this budget item!\n\nInput: ") 
+        #Input Validation
+        while budget_amount == "" or budget_amount.strip() == "":
+            print("\n----------------------------------------------------------\n")
+            budget_amount = input("\n\nA blank input is not allowed for this value, Please enter a budget amount ($)!\n\nThis is how much money you want to put into this budget item!\n\nYour Input: ")
+
+
+
+
 
 
     def get_users_budgets(self, user, income_statement_id = None):
@@ -168,8 +193,8 @@ class Budget:
 
         Returns
         -------
-        budget_object : List of BankAccount Objects 
-            this is returned if the database call was successful in finding any BankAccounts for the User_ID provided
+        budget_object : List of Budget Objects 
+            this is returned if the database call was successful in finding any Budgets for the User_ID provided
 
         --or--
 
@@ -222,7 +247,6 @@ class Budget:
                 return 0
 
 
-
     def view_user_budgets(self, user, list_all_budgets = None):
 
         print("\n\n----------------------------------------------------------\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n----------------------------------------------------------\n\n")
@@ -266,6 +290,7 @@ class Budget:
             
 
             income_statement_number = 1
+            income_statement_numbers = []
 
             user_income_statements = IncomeStatement.get_users_statements(user)
 
@@ -280,18 +305,38 @@ class Budget:
 
             for x in user_income_statements:
 
-                print("Budgets for Income Statement #" + str(income_statement_number))
+                print("Income Statement #" + str(income_statement_number))
                 print("Income Statement Description: " + x.Description)
                 print("Income Statement Date: " + x.Date)
                 print("Income Statement Amount: " + str(x.Amount))
                 print("\n--------------------------------------------------------------------------\n")
-                
-                income_statement_number += 1
 
+                income_statement_numbers.append(x.IncomeStatement_ID)
+
+
+            check_bit = 0
 
             user_choice_view_budgets = input("\nPlease select which Income Statement's budgets you would like to look at!\n\nYour Input: ")
 
+            for x in income_statement_number:
+                if str(x) == int(user_choice_view_budgets.strip()):
+                    check_bit = 1
+
+            while check_bit == 0:
+                user_choice_view_budgets = input("n\n**INVALID INPUT**\n\nPlease select which Income Statement's budgets you would like to look at!\n\nYour Input: ")
+
+
             user_choice_view_budgets = user_choice_view_budgets.strip()
+
+            user_specified_budgets = Budget.get_users_budgets( user = user, income_statement_id = int(user_choice_view_budgets))
+
+            print(str(user_specified_budgets))
+
+
+            '''
+            Your dumb ass decided to write a function to VIEW a Budget without BEING ABLE TO EVEN FRICKEN MAKE ONE. 
+            
+            '''
             
 
 
