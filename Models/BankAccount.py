@@ -172,7 +172,7 @@ class BankAccount:
         #and will run the accept statement below
         try: 
 
-            amount = "{:.2f}".format(float(amount))
+            amount = float("{:.2f}".format(float(amount)))
             GoodMoney = True
             
         except Exception as e:
@@ -191,7 +191,7 @@ class BankAccount:
                     amount = input("\n\n**A blank input is not allowed for this value**\nPlease enter the amount that is currently in your Bank Account!\n\nYour Input: $")
                 
                 try: 
-                    amount = "{:.2f}".format(float(amount))
+                    amount = float("{:.2f}".format(float(amount)))
                     GoodMoney = True
                     
                 except Exception as e:
@@ -211,14 +211,14 @@ class BankAccount:
 
         #Showing the user the Bank Account they created
         print("\n\nHere is your Bank Account:\n")
-        print("Name: " + name + "\nDescription: " + description + "\nAmount: $" + amount)
+        print("Name: " + name + "\nDescription: " + description + "\nAmount: $" + str(amount))
 
 
         user_edit_bank_account = input("\nIs this information correct?\n\nYour Input (Yes/No): ").lower()
 
         while user_edit_bank_account !=  "yes" and user_edit_bank_account != "no":
 
-            user_edit_bank_account = input("\nPlease only input accepted inputs\n\nYour Input (Yes/No): ").lower()
+            user_edit_bank_account = input("\nPlease only input accepted inputs. Is this information correct?\n\nYour Input (Yes/No): ").lower()
 
         if user_edit_bank_account == "no":
             
@@ -271,7 +271,7 @@ class BankAccount:
             return 0
 
 
-    def view_user_bank_accounts(user, user_bank_accounts = None, ):
+    def view_user_bank_accounts(user, user_bank_accounts = None):
         """
         This method is used to output user BankAccounts to the command line
 
@@ -321,6 +321,7 @@ class BankAccount:
                 print("Name: " + str(x.Name))
                 print("Description: " + str(x.Description))
                 print("Amount: $" + str(x.Amount))
+                print("\n")
                 count += 1
 
             input("\nPlease hit enter when you would like to continue....")
@@ -344,6 +345,7 @@ class BankAccount:
                 print("Name: " + str(x.Name))
                 print("Description: " + str(x.Description))
                 print("Amount: $" + str(x.Amount))
+                print("\n")
                 count += 1
 
 
@@ -580,6 +582,99 @@ class BankAccount:
             print("\n----------------------------------------------------------\n")
             print("There was an error updating the database. We will return you back to the menu")
             return
+        
+
+    def deleted_user_bank_account(user, user_bank_accounts = None):
+        """
+        This method is used to delete a users bank account(s). When a bank account is deleted all of the other 
+        associated items (Line items, Income Statements, etc) associated with the account need to be deleted as 
+        well.
+
+        ...
+
+        Parameters
+        ----------
+        user: User Object
+            This is a user object mainly used to get the User_ID from the user'
+        user_bank_accounts: A list of Bank Acount Objects
+            This is used to chose if you want to provide the user Bank Accounts or if you need 
+            the database to be called. If it is not none then you provided the accounts 
+            requiring less Database calls
+        
+        """
+
+
+        #Declare Variables
+        bank_account_delete_statement = "DELETE FROM BANKACCOUNT WHERE Account_ID = ?"
+        account_found = False
+
+        #TODO Create a better method for the user selecting the Bank account that they want to delete. Typing the name is not a good solution.
+        #This will also make sure the user only selects a bank account that exists.
+
+        if user_bank_accounts == None:
+
+            BankAccount.view_user_bank_accounts(user)
+
+        else:
+
+            BankAccount.view_user_bank_accounts(user, user_bank_accounts)
+
+        #Getting the name of the bank account the user wants to delete
+        Bank_Account_Name = input("\n\nPlease enter the name of the Bank Account you would like to delete!\n\n*DISCLAIMER*: This will delete anything that is associate with this budget. This includes Line Items, Expenses, Budgets, etc.\n\nYour Input: ")
+
+        while Bank_Account_Name == "" or Bank_Account_Name.strip() == "":
+
+            print("\n----------------------------------------------------------\n")
+            Bank_Account_Name = input("\n\nA blank input is not allowed for this value, Please enter the name of the Bank Account you would like to delete!\n\n*DISCLAIMER*: This will delete anything that is associate with this budget. This includes Line Items, Expenses, Budgets, etc.\n\nYour Input: ")
+
+        
+        bank_accounts = BankAccount.get_users_bank_accounts(user)
+
+        for x in bank_accounts:
+            if x.Name.lower() == Bank_Account_Name.strip().lower():
+                temp_bank_account = x
+                account_found = True
+
+        if account_found:   
+
+            print("\n\nPlease confirm this is the account you would like to delete:")
+            print("\nAccount #" + str(temp_bank_account.Account_ID) + ":")
+            print("Name: " + str(temp_bank_account.Name))
+            print("Description: " + str(temp_bank_account.Description))
+            print("Amount: $" + str(temp_bank_account.Amount))
+
+        else:
+
+            print("Sorry, Bank Account not Found")
+
+
+        #Getting the name of the bank account the user wants to delete
+        Bank_Account_Delete_Answer = input("\n\n*DISCLAIMER*: This will delete anything that is associate with this budget. This includes Line Items, Expenses, Budgets, etc.\n\nYour Input (Yes/No): ")
+
+        while Bank_Account_Delete_Answer.lower().strip() != "yes" or  Bank_Account_Delete_Answer.lower().strip() != "y" or Bank_Account_Delete_Answer.lower().strip() != "no" or  Bank_Account_Delete_Answer.lower().strip() != "n":
+
+            print("\n----------------------------------------------------------\n")
+            Bank_Account_Name = input("\n\nThe only input allowed is Yes, Y, No, or N!\n\nYour Input: ")
+
+
+        if Bank_Account_Delete_Answer.lower().strip() == "y" or Bank_Account_Delete_Answer.lower().strip() == "yes":
+
+            #TODO Delete all of the Expenses associated with the Bank Account
+            #TODO Delete All of the Line Items associated with the Bank Account
+            #TODO Delete all of the Budget and Income Statement ties with the Bank Account
+            #TODO Delete all of the Budgets Associated with the Bank Account
+            #TODO Delete all of the Income Statements Associated with the Bank Account
+            cursor().execute(bank_account_delete_statement, (temp_bank_account.Account_ID,)).fetchall()
+
+
+
+
+
+        
+
+            
+
+
             
 
         
